@@ -6,9 +6,9 @@ baseUri: /
       application/json:
         example: |
           {
-            "restaurantName": "Byron Burger",
-            "description": "High end burger restaurant",
-            "restaurantType": ["Burger"]
+            "name": "Byron Burger",
+            "description": "High end burger restaurants",
+            "type": ["Burger"]
           }
     responses:
       200:
@@ -17,24 +17,17 @@ baseUri: /
           application/json:
             example: |
               {
-                "restaurantId": "xxx",
-                "restaurantName": "Byron Burger",
+                "id": "xxx",
+                "name": "Byron Burger",
                 "description": "High end burger restaurant",
-                "restaurantType": ["Burger"]
+                "type": ["Burger"]
               }
       400:
-        description: Failure eg. Restaurant already exists
+        description: Bad request, restaurant name not specified
         body:
           application/json:
             example: |
-              { "message": "reason for failure" }
-      500:
-        description: Application error.
-        body:
-          application/json:
-            example: |
-              { "message": "reason for failure" }
-
+              { "message": "Mandatory field restaurant name not specified" }
   get:
     queryParameters:
       name:
@@ -108,7 +101,7 @@ baseUri: /
                     "tags": ["wagamama", "ramen", "gyoza"]
                   }]
                 }
-        400:
+        404:
           description: Could not find restaurant Id
           body:
             application/json:
