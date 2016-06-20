@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -36,7 +36,8 @@ public class RestaurantResource {
     public Restaurant get(@PathParam("id") UUID id) {
         Restaurant existingRestaurant = restaurantService.findRestaurantById(id);
         if (existingRestaurant == null) {
-            // TODO: New ResponseException
+            // TODO: Return optional empty if not found
+            //Optional<Restaurant> empty = Optional.empty();
         }
         return existingRestaurant;
     }
