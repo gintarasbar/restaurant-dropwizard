@@ -1,4 +1,4 @@
-baseUri: /
+baseUri:
 /restaurants/v1:
   post:
     description: Create a restaurant entry
@@ -17,7 +17,7 @@ baseUri: /
           application/json:
             example: |
               {
-                "id": "xxx",
+                "id": "UUID",
                 "name": "Byron Burger",
                 "description": "High end burger restaurant",
                 "type": ["Burger"]
@@ -29,9 +29,13 @@ baseUri: /
             example: |
               { "message": "Mandatory field restaurant name not specified" }
   get:
+    description: Get restaurants stored in CSV
     queryParameters:
+      id:
+        type: UUID
+        description: Restaurant id (UUID)
+        required: true
       name:
-        displayName: Restaurant name
         type: string
         description: Name of restaurant
         example: "Wagamama"
@@ -40,28 +44,6 @@ baseUri: /
         200:
           body:
             application/json:
-              example: |
-                { "restaurants": [
-                  {
-                    "restaurantId": "xxx",
-                    "restaurantName": "Wagamama",
-                    "description": "Overall asian food",
-                    "address": "1, Clink Street",
-                    "telephone": "020-7403-3659",
-                    "priceRange": "£15-£20",
-                    "openingHours": {
-                      "Monday": "9:00 - 17:00",
-                      "Tuesday": "9:00 - 17:00",
-                      "Wednesday": "9:00 - 17:00",
-                      "Thursday": "9:00 - 17:00",
-                      "Friday": "9:00 - 17:00",
-                      "Saturday": "9:00 - 17:00",
-                      "Sunday": "Closed"
-                    },
-                    "restaurantType": ["Thai", "Japanese", "Chinese"],
-                    "tags": ["wagamama", "ramen"]
-                  }]
-                }
         500:
                 description: Application error.
                 body:
@@ -72,35 +54,13 @@ baseUri: /
   get:
     description: Get restaurants by UUID
     queryParameters:
-      restaurantId:
+      id:
         description: Restaurant's UUID
-        type: string
+        type: UUID
       responses:
         200:
           body:
             application/json:
-              example: |
-                { "restaurants": [
-                  {
-                    "restaurantId": "xxx",
-                    "restaurantName": "Wagamama",
-                    "description": "Overall asian food",
-                    "address": "1, Clink Street",
-                    "telephone": "020-7403-3659",
-                    "priceRange": "£15-£20",
-                    "openingHours": {
-                      "Monday": "9:00 - 17:00",
-                      "Tuesday": "9:00 - 17:00",
-                      "Wednesday": "9:00 - 17:00",
-                      "Thursday": "9:00 - 17:00",
-                      "Friday": "9:00 - 17:00",
-                      "Saturday": "9:00 - 17:00",
-                      "Sunday": "Closed"
-                    },
-                    "restaurantType": ["Thai", "Japanese", "Chinese"],
-                    "tags": ["wagamama", "ramen", "gyoza"]
-                  }]
-                }
         404:
           description: Could not find restaurant Id
           body:
