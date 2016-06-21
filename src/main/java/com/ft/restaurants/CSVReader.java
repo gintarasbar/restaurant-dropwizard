@@ -44,7 +44,7 @@ public class CSVReader {
 
         try {
             List restaurants = new ArrayList();
-            fileReader = new FileReader(String.valueOf(Resources.getResource("southwark.csv")));
+            fileReader = new FileReader(Resources.getResource("southwark.csv").toString());
             // fileReader = new FileReader(filePath + "\\src\\main\\resources\\southwark.csv");
             csvParser = new CSVParser(fileReader, csvFormat);
             List csvRecords = csvParser.getRecords();
@@ -57,7 +57,6 @@ public class CSVReader {
         } catch (Exception exception) {
             System.out.println("Error while loading CSV");
             exception.printStackTrace();
-            System.exit(0);
             throw new Exception();
         } finally {
           try {

@@ -30,4 +30,5 @@ public class RestaurantsApplication extends Application<RestaurantsConfiguration
         // TODO: implement application
         environment.jersey().register(new RestaurantResource());
     }
+
 }

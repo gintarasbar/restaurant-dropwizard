@@ -1,17 +1,8 @@
 package com.ft.restaurants.service;
 
+import com.ft.restaurants.domain.CreateRestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -20,16 +11,27 @@ import java.util.UUID;
  */
 public class RestaurantService {
 
-    public Restaurant findRestaurantById(UUID id) {
+    /*public Restaurant findRestaurantById(UUID id) {
         // TODO: Implement findById
-        /*Restaurant restaurant;
-        return restaurant;*/
-    }
+        *//*Restaurant restaurant;
+        return restaurant;*//*
+    }*/
 
     // TODO: Implement this method
-    public Restaurant createRestaurant() {
-        /*Restaurant restaurant;
-        return restaurant;*/
+    public Restaurant createRestaurant(CreateRestaurantRequest request) {
+        Restaurant newRestaurant = Restaurant.copy(request).id(UUID.randomUUID()).build();
+        // TODO: Add to RestaurantRepository
+        return newRestaurant;
     }
+
+    public Restaurant updateRestaurant(Restaurant restaurant) {
+       // restaurant.copy().address(qsdsqds).build()
+        restaurant.copy().build();
+        return null;
+    }
+
+    /*public List<Restaurant> getRestaurants() {
+        return restaurants;
+    }*/
 }
 

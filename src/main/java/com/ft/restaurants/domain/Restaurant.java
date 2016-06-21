@@ -1,7 +1,6 @@
 package com.ft.restaurants.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.UUID;
 
@@ -14,7 +13,6 @@ public class Restaurant {
     private UUID id;
 
     @JsonProperty
-    @NotEmpty
     private String name;
 
     @JsonProperty
@@ -88,6 +86,7 @@ public class Restaurant {
         return latitude;
     }
 
+    // FOR PUT
     public RestaurantBuilder copy() {
         return RestaurantBuilder.restaurantBuilder()
                 .id(id)
@@ -102,9 +101,16 @@ public class Restaurant {
     }
 
 
-    // TODO: fix 'Non-static field address cannot be referenced from a static context
+    // FOR POST
     public static RestaurantBuilder copy(CreateRestaurantRequest request) {
         return RestaurantBuilder.restaurantBuilder()
-                .address(address);
+                .name(request.getName())
+                .tag(request.getTag())
+                .address(request.getAddress())
+                .city(request.getCity())
+                .postcode(request.getPostcode())
+                .hygieneRating(request.getHygieneRating())
+                .longitude(request.getLongitude())
+                .latitude(request.getLatitude());
     }
 }
