@@ -1,2 +1,2 @@
 # restaurant-dropwizard
-Dropwizard project xample for Restaurant search
+Dropwizard project example for Restaurant search
