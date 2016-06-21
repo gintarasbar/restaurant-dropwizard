@@ -2,6 +2,7 @@ package com.ft.restaurants.resources;
 
 import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
+import com.ft.restaurants.domain.CreateRestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.service.RestaurantService;
 
@@ -45,11 +46,23 @@ public class RestaurantResource {
     @POST
     @Timed
     @ExceptionMetered
-    public Restaurant addRestaurant(@Valid Restaurant restaurant) {
-        restaurant.setId(UUID.randomUUID().toString());
+    // TODO: Use builder for constructing/copying restaurant object
+    // TODO: Create restaurantrequest object
+    public Restaurant addRestaurant(@Valid CreateRestaurantRequest request) {
+        Restaurant newRestaurant = Restaurant.copy(request)
+                .id(UUID.randomUUID())
+        .build();
         restaurantService.createRestaurant();
 
-        return restaurant;
+        return newRestaurant;
+    }
+
+    @PUT
+    @Timed
+    @ExceptionMetered
+    public Restaurant updateRestaurant(@PathParam("id") UUID id, Restaurant restaurant) {
+        Restaurant existingRestaurant = restaurantService.findRestaurantById(id);
+        System.out.println();
     }
 
     @GET

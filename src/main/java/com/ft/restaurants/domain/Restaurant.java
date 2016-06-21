@@ -9,8 +9,8 @@ import java.util.UUID;
  * Created by Jorge on 6/18/2016.
  */
 public class Restaurant {
+
     @JsonProperty
-    @NotEmpty
     private UUID id;
 
     @JsonProperty
@@ -38,6 +38,8 @@ public class Restaurant {
     @JsonProperty
     private double latitude;
 
+
+    // TODO: How to set individual fields then with big constructor..?
     public Restaurant(UUID id, String name, String tag, String address, String city, String postcode, int hygieneRating, double longitude, double latitude) {
         this.id = id;
         this.name = name;
@@ -84,5 +86,25 @@ public class Restaurant {
 
     public double getLatitude() {
         return latitude;
+    }
+
+    public RestaurantBuilder copy() {
+        return RestaurantBuilder.restaurantBuilder()
+                .id(id)
+                .name(name)
+                .tag(tag)
+                .address(address)
+                .city(city)
+                .postcode(postcode)
+                .hygieneRating(hygieneRating)
+                .longitude(longitude)
+                .latitude(latitude);
+    }
+
+
+    // TODO: fix 'Non-static field address cannot be referenced from a static context
+    public static RestaurantBuilder copy(CreateRestaurantRequest request) {
+        return RestaurantBuilder.restaurantBuilder()
+                .address(address);
     }
 }
