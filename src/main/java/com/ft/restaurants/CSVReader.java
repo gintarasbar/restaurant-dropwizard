@@ -1,6 +1,7 @@
 package com.ft.restaurants;
 
 import com.ft.restaurants.domain.Restaurant;
+import com.google.common.io.Resources;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -32,7 +33,7 @@ public class CSVReader {
     private static final String RESTAURANT_LONGITUDE = "Longitude";
     private static final String RESTAURANT_LATITUDE = "Latitude";
 
-    public static void readCSV() throws IOException {
+    public static void readCSV() throws Exception {
         String filePath = new File("").getAbsolutePath();
 
         FileReader fileReader = null;
@@ -43,7 +44,8 @@ public class CSVReader {
 
         try {
             List restaurants = new ArrayList();
-            fileReader = new FileReader(filePath + "\\src\\main\\resources\\southwark.csv");
+            fileReader = new FileReader(String.valueOf(Resources.getResource("southwark.csv")));
+            // fileReader = new FileReader(filePath + "\\src\\main\\resources\\southwark.csv");
             csvParser = new CSVParser(fileReader, csvFormat);
             List csvRecords = csvParser.getRecords();
 
@@ -55,6 +57,8 @@ public class CSVReader {
         } catch (Exception exception) {
             System.out.println("Error while loading CSV");
             exception.printStackTrace();
+            System.exit(0);
+            throw new Exception();
         } finally {
           try {
               fileReader.close();
