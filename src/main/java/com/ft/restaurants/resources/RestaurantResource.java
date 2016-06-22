@@ -4,15 +4,16 @@ import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.ft.restaurants.domain.CreateRestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
+import com.ft.restaurants.repository.RestaurantRepository;
 import com.ft.restaurants.service.RestaurantService;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Optional;
+import javax.ws.rs.core.Response;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -24,13 +25,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class RestaurantResource {
     public static final String RESTAURANTS_V1 = "/restaurants/v1";
     private RestaurantService restaurantService;
+    private RestaurantRepository restaurantRepository = new RestaurantRepository();
 
     @Inject
     public RestaurantResource(RestaurantService restaurantService) {
         this.restaurantService = checkNotNull(restaurantService);
     }
 
-    @GET
+    /*@GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Timed
+    public List<Restaurant> getAllRestaurants() {
+
+        return restaurantService.getRestaurants();
+    }*/
+
+    /*@GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Timed
@@ -41,28 +51,31 @@ public class RestaurantResource {
             //Optional<Restaurant> empty = Optional.empty();
         }
         return existingRestaurant;
-    }
+    }*/
 
     @POST
-    @Timed
-    @ExceptionMetered
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     // TODO: Use builder for constructing/copying restaurant object
     // TODO: Create restaurantrequest object
-    public Restaurant addRestaurant(@Valid CreateRestaurantRequest request) {
-        Restaurant newRestaurant = Restaurant.copy(request)
-                .id(UUID.randomUUID())
-        .build();
-        restaurantService.createRestaurant();
-
-        return newRestaurant;
+    public Response addRestaurant(CreateRestaurantRequest request) {
+        checkNotNull(request);
+        Restaurant newRestaurant = restaurantService.createRestaurant(request);
+        restaurantRepository.addToRepository(newRestaurant);
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(newRestaurant)
+                .build();
     }
 
     @PUT
     @Timed
     @ExceptionMetered
     public Restaurant updateRestaurant(@PathParam("id") UUID id, Restaurant restaurant) {
-        Restaurant existingRestaurant = restaurantService.findRestaurantById(id);
-        System.out.println();
+        checkNotNull(restaurant);
+        checkArgument(id.equals(restaurant.getId()),"ids must be equal");
+        Restaurant existingRestaurant = restaurantService.updateRestaurant(restaurant);
+        return existingRestaurant;
     }
 
     @GET

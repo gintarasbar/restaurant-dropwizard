@@ -16,7 +16,7 @@ public final class RestaurantBuilder {
     private double longitude;
     private double latitude;
 
-    private RestaurantBuilder() {
+    public RestaurantBuilder() {
     }
 
     public static RestaurantBuilder restaurantBuilder() {

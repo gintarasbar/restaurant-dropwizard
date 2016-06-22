@@ -23,7 +23,6 @@ public class CreateRestaurantRequest {
     @JsonProperty
     private String tag;
 
-    // TODO: Fix 'variable address is already in the scope'
     @JsonProperty
     private String address;
 
@@ -45,7 +44,7 @@ public class CreateRestaurantRequest {
     @JsonCreator
     public CreateRestaurantRequest(
             @JsonProperty("name") String name,
-            @JsonProperty("tag") String tag),
+            @JsonProperty("tag") String tag,
             @JsonProperty("address") String address,
             @JsonProperty("city") String city,
             @JsonProperty("postcode") String postcode,
@@ -62,4 +61,35 @@ public class CreateRestaurantRequest {
         this.latitude = defaultIfNull(latitude, null);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public int getHygieneRating() {
+        return hygieneRating;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
 }
