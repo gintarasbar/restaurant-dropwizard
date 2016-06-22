@@ -9,7 +9,11 @@ import java.util.Set;
  * Created by Jorge on 6/21/2016.
  */
 public class RestaurantRepository {
-    public Set<Restaurant> restaurants = new HashSet<>();
+    public static Set<Restaurant> restaurants = new HashSet<>();
+
+    public Set<Restaurant> getRestaurants() {
+        return restaurants;
+    }
 
     public void addToRepository(Restaurant restaurant) {
         this.restaurants.add(restaurant);
