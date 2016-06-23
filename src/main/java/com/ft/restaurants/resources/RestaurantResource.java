@@ -7,7 +7,6 @@ import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.repository.RestaurantRepository;
 import com.ft.restaurants.service.RestaurantService;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -27,9 +26,23 @@ public class RestaurantResource {
     private RestaurantService restaurantService = new RestaurantService();
     private RestaurantRepository restaurantRepository = new RestaurantRepository();
 
-    @Inject
-    public RestaurantResource(RestaurantService restaurantService) {
-        this.restaurantService = checkNotNull(restaurantService);
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Timed
+    public Response get(@PathParam("id") UUID id) {
+        Restaurant existingRestaurant = restaurantRepository.findRestaurantById(id);
+        if (existingRestaurant == null) {
+            // TODO: Return optional empty if not found
+            // Optional<Restaurant> empty = Optional.empty();
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+        return Response
+                .status(Response.Status.FOUND)
+                .entity(existingRestaurant)
+                .build();
     }
 
     /*@GET
@@ -61,7 +74,6 @@ public class RestaurantResource {
     public Response addRestaurant(CreateRestaurantRequest request) {
         checkNotNull(request);
         Restaurant newRestaurant = restaurantService.createRestaurant(request);
-        restaurantRepository.addToRepository(newRestaurant);
         return Response
                 .status(Response.Status.CREATED)
                 .entity(newRestaurant)
@@ -69,6 +81,7 @@ public class RestaurantResource {
     }
 
     @PUT
+    @Path("{id}/update-restaurant")
     @Timed
     @ExceptionMetered
     public Restaurant updateRestaurant(@PathParam("id") UUID id, Restaurant restaurant) {

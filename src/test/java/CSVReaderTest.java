@@ -49,6 +49,12 @@ public class CSVReaderTest {
         expectedRestaurants.add(testRestaurant2);
 
         actualRestaurants = testReader.readCSV("test.csv");
+
+        System.out.println(actualRestaurants.get(0).getId().toString());
+        System.out.println(expectedRestaurants.get(0).getId().toString());
+        System.out.println(actualRestaurants.get(1).getId().toString());
+        System.out.println(expectedRestaurants.get(1).getId().toString());
+
         assertThat(actualRestaurants.get(0).getId().toString(), is(expectedRestaurants.get(0).getId().toString()));
         assertThat(actualRestaurants.get(1).getId().toString(), is(expectedRestaurants.get(1).getId().toString()));
         assertThat(actualRestaurants.get(0).getName(), is(expectedRestaurants.get(0).getName()));

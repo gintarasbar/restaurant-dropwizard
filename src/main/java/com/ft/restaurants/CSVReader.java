@@ -19,7 +19,8 @@ public class CSVReader {
     /*BufferedReader bufferedReader = null;
         bufferedReader = new BufferedReader(new FileReader(filePath + "\\src\\main\\resources\\southwark.csv"));
 
-        final String NEW_LINE_SEPARATOR = "\n";*/
+        */
+    private static final String NEW_LINE_SEPARATOR = "\n";
 
     private static final String [] CSV_HEADER = {"Id","Name","Tags","Address","City","Postcode","Hygiene_rating","Longitude","Latitude"};
     private static final String RESTAURANT_ID = "Id";
@@ -39,7 +40,7 @@ public class CSVReader {
 
         CSVParser csvParser = null;
 
-        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader(CSV_HEADER);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader(CSV_HEADER).withRecordSeparator(NEW_LINE_SEPARATOR);
 
         List<Restaurant> restaurants;
         try {
