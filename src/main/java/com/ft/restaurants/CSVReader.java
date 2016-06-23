@@ -1,7 +1,6 @@
 package com.ft.restaurants;
 
 import com.ft.restaurants.domain.Restaurant;
-import com.google.common.io.Resources;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -20,7 +19,8 @@ public class CSVReader {
     /*BufferedReader bufferedReader = null;
         bufferedReader = new BufferedReader(new FileReader(filePath + "\\src\\main\\resources\\southwark.csv"));
 
-        final String NEW_LINE_SEPARATOR = "\n";*/
+        */
+    private static final String NEW_LINE_SEPARATOR = "\n";
 
     private static final String [] CSV_HEADER = {"Id","Name","Tags","Address","City","Postcode","Hygiene_rating","Longitude","Latitude"};
     private static final String RESTAURANT_ID = "Id";
@@ -33,19 +33,20 @@ public class CSVReader {
     private static final String RESTAURANT_LONGITUDE = "Longitude";
     private static final String RESTAURANT_LATITUDE = "Latitude";
 
-    public static void readCSV() throws Exception {
+    public static List<Restaurant> readCSV(String file) throws Exception {
         String filePath = new File("").getAbsolutePath();
 
         FileReader fileReader = null;
 
         CSVParser csvParser = null;
 
-        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader(CSV_HEADER);
+        CSVFormat csvFormat = CSVFormat.DEFAULT.withHeader(CSV_HEADER).withRecordSeparator(NEW_LINE_SEPARATOR);
 
+        List<Restaurant> restaurants;
         try {
-            List restaurants = new ArrayList();
-            fileReader = new FileReader(Resources.getResource("southwark.csv").toString());
-            // fileReader = new FileReader(filePath + "\\src\\main\\resources\\southwark.csv");
+            restaurants = new ArrayList<Restaurant>();
+            // fileReader = new FileReader(Resources.getResource(file).toString());
+            fileReader = new FileReader(filePath + "\\src\\main\\resources\\" + file);
             csvParser = new CSVParser(fileReader, csvFormat);
             List csvRecords = csvParser.getRecords();
 
@@ -59,14 +60,15 @@ public class CSVReader {
             exception.printStackTrace();
             throw new Exception();
         } finally {
-          try {
-              fileReader.close();
-              csvParser.close();
-          } catch (IOException ioexception) {
-              System.out.println("Error while closing CSV parser");
-              ioexception.printStackTrace();
-          }
+            try {
+                fileReader.close();
+                csvParser.close();
+            } catch (IOException ioexception) {
+                System.out.println("Error while closing CSV parser");
+                ioexception.printStackTrace();
+            }
         }
+        return restaurants;
     }
 }
 
