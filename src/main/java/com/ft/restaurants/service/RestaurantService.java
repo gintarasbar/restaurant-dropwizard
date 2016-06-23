@@ -30,8 +30,5 @@ public class RestaurantService {
         return null;
     }
 
-    /*public List<Restaurant> getRestaurants() {
-        return restaurants;
-    }*/
 }
 
