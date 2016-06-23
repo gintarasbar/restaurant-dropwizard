@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Path(RestaurantResource.RESTAURANTS_V1)
 public class RestaurantResource {
     public static final String RESTAURANTS_V1 = "/restaurants/v1";
-    private RestaurantService restaurantService;
+    private RestaurantService restaurantService = new RestaurantService();
     private RestaurantRepository restaurantRepository = new RestaurantRepository();
 
     @Inject
