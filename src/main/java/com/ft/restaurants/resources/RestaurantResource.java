@@ -77,15 +77,4 @@ public class RestaurantResource {
         Restaurant existingRestaurant = restaurantService.updateRestaurant(restaurant);
         return existingRestaurant;
     }
-
-    @GET
-    @Path("/hello")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getGreeting() {
-        return "Hello world";
-    }
-
-    public RestaurantResource() {
-
-    }
 }
