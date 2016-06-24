@@ -38,15 +38,21 @@ public class Restaurant {
 
 
     // TODO: How to set individual fields then with big constructor..?
-    public Restaurant(UUID id, String name, String tag, String address, String city, String postcode, int hygieneRating, double longitude, double latitude) {
+    public Restaurant(UUID id, String name, String tag, String address, String city, String postcode, Integer hygieneRating, Double longitude, Double latitude) {
         this.id = id;
         this.name = name;
         this.tag = tag;
         this.address = address;
         this.city = city;
         this.postcode = postcode;
+        if(hygieneRating == null)
+            hygieneRating = 0;
         this.hygieneRating = hygieneRating;
+        if(longitude == null)
+            longitude = 0.00;
         this.longitude = longitude;
+        if(latitude == null)
+            latitude = 0.00;
         this.latitude = latitude;
     }
 

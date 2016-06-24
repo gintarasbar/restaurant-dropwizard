@@ -43,5 +43,18 @@ public class RestaurantRepository {
         }
         return restaurantMatches;
     }
+
+    public Set<Restaurant> findRestaurantsByAddress(Set<Restaurant> restaurants, String regex) {
+        Set<Restaurant> restaurantMatches = new HashSet<>();
+        Pattern pattern = Pattern.compile(regex);
+
+        for (Restaurant restaurant : this.restaurants) {
+            String restaurantAddress = restaurant.getAddress();
+            if (pattern.matcher(restaurantAddress).matches()) {
+                restaurantMatches.add(restaurant);
+            }
+        }
+        return restaurantMatches;
+    }
 }
 
