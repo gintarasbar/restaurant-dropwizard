@@ -5,6 +5,7 @@ import com.ft.restaurants.domain.Restaurant;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * Created by Jorge on 6/21/2016.
@@ -28,6 +29,19 @@ public class RestaurantRepository {
             }
         }
         return restaurantFind;
+    }
+
+    public Set<Restaurant> findRestaurantsByName(Set<Restaurant> restaurants, String regex) {
+        Set<Restaurant> restaurantMatches = new HashSet<>();
+        Pattern pattern = Pattern.compile(regex);
+
+        for (Restaurant restaurant : restaurants) {
+            String restaurantName = restaurant.getName();
+            if (pattern.matcher(restaurantName).matches()) {
+                restaurantMatches.add(restaurant);
+            }
+        }
+        return restaurantMatches;
     }
 }
 
