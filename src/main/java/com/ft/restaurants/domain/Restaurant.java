@@ -36,8 +36,6 @@ public class Restaurant {
     @JsonProperty
     private double latitude;
 
-
-    // TODO: How to set individual fields then with big constructor..?
     public Restaurant(UUID id, String name, String tag, String address, String city, String postcode, Integer hygieneRating, Double longitude, Double latitude) {
         this.id = id;
         this.name = name;
@@ -45,14 +43,8 @@ public class Restaurant {
         this.address = address;
         this.city = city;
         this.postcode = postcode;
-        if(hygieneRating == null)
-            hygieneRating = 0;
         this.hygieneRating = hygieneRating;
-        if(longitude == null)
-            longitude = 0.00;
         this.longitude = longitude;
-        if(latitude == null)
-            latitude = 0.00;
         this.latitude = latitude;
     }
 
@@ -93,17 +85,43 @@ public class Restaurant {
     }
 
     // FOR PUT
-    public RestaurantBuilder copy() {
+    public RestaurantBuilder copyUpdate(CreateRestaurantRequest request) {
+        String updatedName = request.getName();
+        String updatedTag = request.getTag();
+        String updatedAddress = request.getAddress();
+        String updatedCity = request.getCity();
+        String updatedPostCode = request.getPostcode();
+        Integer updatedHygieneRating = request.getHygieneRating();
+        Double updatedLongitude = request.getLongitude();
+        Double updatedLatitude = request.getLatitude();
+
+        if(updatedName == "")
+             updatedName = name;
+        if (updatedTag == "")
+            updatedTag = tag;
+        if (updatedAddress == "")
+            updatedAddress = address;
+        if (updatedCity == "")
+            updatedCity = city;
+        if (updatedPostCode == "")
+            updatedPostCode = postcode;
+        if (updatedHygieneRating == 0)
+            updatedHygieneRating = hygieneRating;
+        if (updatedLongitude == 0.00)
+            updatedLongitude = longitude;
+        if (updatedLatitude == 0.00)
+            updatedLatitude = latitude;
+
         return RestaurantBuilder.restaurantBuilder()
                 .id(id)
-                .name(name)
-                .tag(tag)
-                .address(address)
-                .city(city)
-                .postcode(postcode)
-                .hygieneRating(hygieneRating)
-                .longitude(longitude)
-                .latitude(latitude);
+                .name(updatedName)
+                .tag(updatedTag)
+                .address(updatedAddress)
+                .city(updatedCity)
+                .postcode(updatedPostCode)
+                .hygieneRating(updatedHygieneRating)
+                .longitude(updatedLongitude)
+                .latitude(updatedLatitude);
     }
 
 

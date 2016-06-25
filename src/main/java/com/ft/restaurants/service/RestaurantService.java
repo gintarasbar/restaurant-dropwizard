@@ -28,12 +28,15 @@ public class RestaurantService {
         return newRestaurant;
     }
 
-    public Restaurant updateRestaurant(Restaurant restaurant) {
+    public Restaurant updateRestaurant(Restaurant restaurant, CreateRestaurantRequest request) {
        // restaurant.copy().address(qsdsqds).build()
-        Restaurant newRestaurant = restaurant.copy().build();
-        restaurant = repository.findRestaurantById(restaurant.getId());
-        restaurant.copy().build();
-        return restaurant;
+        Restaurant updatedRestaurant = restaurant
+                                        .copyUpdate(request)
+                                        .build();
+        // restaurant = repository.findRestaurantById(restaurant.getId());
+        // TODO: UPDATE Restaurant repository
+        // repository.updateRestaurantRepository();
+        return updatedRestaurant;
     }
 
 }

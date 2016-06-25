@@ -1,6 +1,5 @@
 package com.ft.restaurants.resources;
 
-import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
 import com.ft.restaurants.domain.CreateRestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
@@ -80,15 +79,21 @@ public class RestaurantResource {
                 .build();
     }
 
+    // TODO Fix restaurantUpdate()
     @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}/update-restaurant")
-    @Timed
-    @ExceptionMetered
-    public Restaurant updateRestaurant(@PathParam("id") UUID id, Restaurant restaurant) {
+    public Response updateRestaurant(@PathParam("id") UUID id, CreateRestaurantRequest createRestaurantRequest) {
+        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
         checkNotNull(restaurant);
         checkArgument(id.equals(restaurant.getId()),"ids must be equal");
-        Restaurant existingRestaurant = restaurantService.updateRestaurant(restaurant);
-        return existingRestaurant;
+        Restaurant updatedRestaurant = restaurantService.updateRestaurant(restaurant, createRestaurantRequest);
+        restaurant = updatedRestaurant;
+        return Response
+                .status(Response.Status.OK)
+                .entity(restaurant)
+                .build();
     }
 
     @GET
