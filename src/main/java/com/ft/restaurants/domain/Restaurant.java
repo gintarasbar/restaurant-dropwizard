@@ -85,7 +85,7 @@ public class Restaurant {
     }
 
     // FOR PUT
-    public RestaurantBuilder copyUpdate(CreateRestaurantRequest request) {
+    public RestaurantBuilder copyUpdate(RestaurantRequest request) {
         String updatedName = request.getName();
         String updatedTag = request.getTag();
         String updatedAddress = request.getAddress();
@@ -126,7 +126,7 @@ public class Restaurant {
 
 
     // FOR POST
-    public static RestaurantBuilder copy(CreateRestaurantRequest request) {
+    public static RestaurantBuilder copy(RestaurantRequest request) {
         return RestaurantBuilder.restaurantBuilder()
                 .name(request.getName())
                 .tag(request.getTag())

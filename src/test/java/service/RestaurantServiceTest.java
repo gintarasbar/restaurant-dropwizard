@@ -1,6 +1,6 @@
 package service;
 
-import com.ft.restaurants.domain.CreateRestaurantRequest;
+import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.repository.RestaurantRepository;
 import com.ft.restaurants.service.RestaurantService;
@@ -33,9 +33,9 @@ public class RestaurantServiceTest {
 
     @Test
     public void createRestaurantShouldBuildRestaurantAndAddToRepo() {
-        CreateRestaurantRequest createRestaurantRequest = new CreateRestaurantRequest("testName", "testTag", "testAddress", "testCity", "testPostCode", 0, 0.00, 0.00);
+        RestaurantRequest restaurantRequest = new RestaurantRequest("testName", "testTag", "testAddress", "testCity", "testPostCode", 0, 0.00, 0.00);
 
-        Restaurant testRestaurant = restaurantService.createRestaurant(createRestaurantRequest);
+        Restaurant testRestaurant = restaurantService.createRestaurant(restaurantRequest);
 
         assertThat(testRestaurant.getName(), is("testName"));
         assertThat(testRestaurant.getId(), is(notNullValue()));

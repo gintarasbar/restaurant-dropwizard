@@ -1,6 +1,6 @@
 package com.ft.restaurants.service;
 
-import com.ft.restaurants.domain.CreateRestaurantRequest;
+import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.repository.RestaurantRepository;
 
@@ -21,14 +21,14 @@ public class RestaurantService {
     }*/
 
     // TODO: Implement this method
-    public Restaurant createRestaurant(CreateRestaurantRequest request) {
+    public Restaurant createRestaurant(RestaurantRequest request) {
         Restaurant newRestaurant = Restaurant.copy(request).id(UUID.randomUUID()).build();
         repository.addToRepository(newRestaurant);
         // TODO: Add to RestaurantRepository
         return newRestaurant;
     }
 
-    public Restaurant updateRestaurant(Restaurant restaurant, CreateRestaurantRequest request) {
+    public Restaurant updateRestaurant(Restaurant restaurant, RestaurantRequest request) {
        // restaurant.copy().address(qsdsqds).build()
         Restaurant updatedRestaurant = restaurant
                                         .copyUpdate(request)

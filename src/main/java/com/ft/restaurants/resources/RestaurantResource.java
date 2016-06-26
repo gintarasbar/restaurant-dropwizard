@@ -1,8 +1,7 @@
 package com.ft.restaurants.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.ft.restaurants.domain.CreateRestaurantRequest;
-import com.ft.restaurants.domain.Restaurant;
+import com.ft.restaurants.domain.*;
 import com.ft.restaurants.repository.RestaurantRepository;
 import com.ft.restaurants.service.RestaurantService;
 
@@ -44,6 +43,22 @@ public class RestaurantResource {
                 .build();
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("{id}/distance")
+    public Response getRestaurantDistance(@PathParam("id") UUID id, DistanceRequest distanceRequest) {
+        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
+        Location restaurantLocation = new Location(restaurant.getLongitude(), restaurant.getLatitude());
+        Location searchLocation = new Location(distanceRequest.getLongitude(), distanceRequest.getLatitude());
+        Distance distance = new Distance(restaurantLocation, searchLocation);
+        return Response
+                .status(Response.Status.OK)
+                .entity(distance)
+                .build();
+
+    }
+
     /*@GET
     @Produces(MediaType.APPLICATION_JSON)
     @Timed
@@ -70,7 +85,7 @@ public class RestaurantResource {
     @Produces(MediaType.APPLICATION_JSON)
     // TODO: Use builder for constructing/copying restaurant object
     // TODO: Create restaurantrequest object
-    public Response addRestaurant(CreateRestaurantRequest request) {
+    public Response addRestaurant(RestaurantRequest request) {
         checkNotNull(request);
         Restaurant newRestaurant = restaurantService.createRestaurant(request);
         return Response
@@ -79,16 +94,15 @@ public class RestaurantResource {
                 .build();
     }
 
-    // TODO Fix restaurantUpdate()
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}/update-restaurant")
-    public Response updateRestaurant(@PathParam("id") UUID id, CreateRestaurantRequest createRestaurantRequest) {
+    public Response updateRestaurant(@PathParam("id") UUID id, RestaurantRequest restaurantRequest) {
         Restaurant restaurant = restaurantRepository.findRestaurantById(id);
         checkNotNull(restaurant);
         checkArgument(id.equals(restaurant.getId()),"ids must be equal");
-        Restaurant updatedRestaurant = restaurantService.updateRestaurant(restaurant, createRestaurantRequest);
+        Restaurant updatedRestaurant = restaurantService.updateRestaurant(restaurant, restaurantRequest);
         restaurant = updatedRestaurant;
         return Response
                 .status(Response.Status.OK)
