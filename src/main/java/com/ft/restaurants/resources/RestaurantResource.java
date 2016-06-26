@@ -1,13 +1,10 @@
 package com.ft.restaurants.resources;
 
-import com.codahale.metrics.annotation.ExceptionMetered;
 import com.codahale.metrics.annotation.Timed;
-import com.ft.restaurants.domain.CreateRestaurantRequest;
-import com.ft.restaurants.domain.Restaurant;
+import com.ft.restaurants.domain.*;
 import com.ft.restaurants.repository.RestaurantRepository;
 import com.ft.restaurants.service.RestaurantService;
 
-import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -27,9 +24,39 @@ public class RestaurantResource {
     private RestaurantService restaurantService = new RestaurantService();
     private RestaurantRepository restaurantRepository = new RestaurantRepository();
 
-    @Inject
-    public RestaurantResource(RestaurantService restaurantService) {
-        this.restaurantService = checkNotNull(restaurantService);
+    @GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Timed
+    public Response get(@PathParam("id") UUID id) {
+        Restaurant existingRestaurant = restaurantRepository.findRestaurantById(id);
+        if (existingRestaurant == null) {
+            // TODO: Return optional empty if not found
+            // Optional<Restaurant> empty = Optional.empty();
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .build();
+        }
+        return Response
+                .status(Response.Status.FOUND)
+                .entity(existingRestaurant)
+                .build();
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("{id}/distance")
+    public Response getRestaurantDistance(@PathParam("id") UUID id, DistanceRequest distanceRequest) {
+        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
+        Location restaurantLocation = new Location(restaurant.getLongitude(), restaurant.getLatitude());
+        Location searchLocation = new Location(distanceRequest.getLongitude(), distanceRequest.getLatitude());
+        Distance distance = new Distance(restaurantLocation, searchLocation);
+        return Response
+                .status(Response.Status.OK)
+                .entity(distance)
+                .build();
+
     }
 
     /*@GET
@@ -58,10 +85,9 @@ public class RestaurantResource {
     @Produces(MediaType.APPLICATION_JSON)
     // TODO: Use builder for constructing/copying restaurant object
     // TODO: Create restaurantrequest object
-    public Response addRestaurant(CreateRestaurantRequest request) {
+    public Response addRestaurant(RestaurantRequest request) {
         checkNotNull(request);
         Restaurant newRestaurant = restaurantService.createRestaurant(request);
-        restaurantRepository.addToRepository(newRestaurant);
         return Response
                 .status(Response.Status.CREATED)
                 .entity(newRestaurant)
@@ -69,12 +95,18 @@ public class RestaurantResource {
     }
 
     @PUT
-    @Timed
-    @ExceptionMetered
-    public Restaurant updateRestaurant(@PathParam("id") UUID id, Restaurant restaurant) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}/update-restaurant")
+    public Response updateRestaurant(@PathParam("id") UUID id, RestaurantRequest restaurantRequest) {
+        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
         checkNotNull(restaurant);
         checkArgument(id.equals(restaurant.getId()),"ids must be equal");
-        Restaurant existingRestaurant = restaurantService.updateRestaurant(restaurant);
-        return existingRestaurant;
+        Restaurant updatedRestaurant = restaurantService.updateRestaurant(restaurant, restaurantRequest);
+        restaurant = updatedRestaurant;
+        return Response
+                .status(Response.Status.OK)
+                .entity(restaurant)
+                .build();
     }
 }

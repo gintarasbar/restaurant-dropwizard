@@ -14,7 +14,7 @@ import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CreateRestaurantRequest {
+public class RestaurantRequest {
 
     @JsonProperty
     @NotEmpty
@@ -42,7 +42,7 @@ public class CreateRestaurantRequest {
     private double latitude;
 
     @JsonCreator
-    public CreateRestaurantRequest(
+    public RestaurantRequest(
             @JsonProperty("name") String name,
             @JsonProperty("tag") String tag,
             @JsonProperty("address") String address,

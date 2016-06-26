@@ -28,6 +28,11 @@ public class RestaurantsApplication extends Application<RestaurantsConfiguration
     public void run(final RestaurantsConfiguration configuration,
                     final Environment environment) {
         // TODO: implement application
+        try {
+            CSVReader.readCSV("southwark.csv");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         environment.jersey().register(new RestaurantResource());
     }
 
