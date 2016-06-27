@@ -8,6 +8,7 @@ import com.ft.restaurants.service.RestaurantService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -23,6 +24,10 @@ public class RestaurantResource {
     public static final String RESTAURANTS_V1 = "/restaurants/v1";
     private RestaurantService restaurantService = new RestaurantService();
     private RestaurantRepository restaurantRepository = new RestaurantRepository();
+
+    public RestaurantResource() {
+
+    }
 
     @GET
     @Path("{id}")
@@ -43,6 +48,18 @@ public class RestaurantResource {
                 .build();
     }
 
+    @GET
+    @Path("/find-by-name/{name}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findRestaurantsByName(@PathParam("name") String name) {
+        Set<Restaurant> foundRestaurants = restaurantRepository.findRestaurantsByName(restaurantRepository.getRestaurants(), name);
+        return Response
+                .status(Response.Status.FOUND)
+                .entity(foundRestaurants)
+                .build();
+    }
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -58,27 +75,6 @@ public class RestaurantResource {
                 .build();
 
     }
-
-    /*@GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Timed
-    public List<Restaurant> getAllRestaurants() {
-
-        return restaurantService.getRestaurants();
-    }*/
-
-    /*@GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Timed
-    public Restaurant get(@PathParam("id") UUID id) {
-        Restaurant existingRestaurant = restaurantService.findRestaurantById(id);
-        if (existingRestaurant == null) {
-            // TODO: Return optional empty if not found
-            //Optional<Restaurant> empty = Optional.empty();
-        }
-        return existingRestaurant;
-    }*/
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -117,7 +113,24 @@ public class RestaurantResource {
         return "Hello world";
     }
 
-    public RestaurantResource() {
+    /*@GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Timed
+    public List<Restaurant> getAllRestaurants() {
 
-    }
+        return restaurantService.getRestaurants();
+    }*/
+
+    /*@GET
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Timed
+    public Restaurant get(@PathParam("id") UUID id) {
+        Restaurant existingRestaurant = restaurantService.findRestaurantById(id);
+        if (existingRestaurant == null) {
+            // TODO: Return optional empty if not found
+            //Optional<Restaurant> empty = Optional.empty();
+        }
+        return existingRestaurant;
+    }*/
 }
