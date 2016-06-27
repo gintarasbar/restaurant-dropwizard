@@ -1,5 +1,6 @@
 package service;
 
+import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.repository.RestaurantRepository;
@@ -28,18 +29,20 @@ public class RestaurantServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        restaurantService = new RestaurantService();
+        restaurantService = new RestaurantService(repository);
     }
 
     @Test
     public void createRestaurantShouldBuildRestaurantAndAddToRepo() {
-        RestaurantRequest restaurantRequest = new RestaurantRequest("testName", "testTag", "testAddress", "testCity", "testPostCode", 0, 0.00, 0.00);
+        RestaurantRequest restaurantRequest = new RestaurantRequest("testName", "testTag",
+                "testAddress", "testCity", "testPostCode",
+                0, new Location(0.00, 0.00));
 
         Restaurant testRestaurant = restaurantService.createRestaurant(restaurantRequest);
 
         assertThat(testRestaurant.getName(), is("testName"));
         assertThat(testRestaurant.getId(), is(notNullValue()));
         // TODO fix this test (Wanted but not invoked)
-        verify(repository).addToRepository(testRestaurant);
+        verify(repository).addRestaurant(testRestaurant);
     }
 }

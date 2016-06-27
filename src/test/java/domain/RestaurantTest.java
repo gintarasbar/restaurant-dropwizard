@@ -1,6 +1,7 @@
 package domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.domain.RestaurantBuilder;
 import io.dropwizard.jackson.Jackson;
@@ -30,8 +31,7 @@ public class RestaurantTest {
                         .city("testCity")
                         .postcode("testPostCode")
                         .hygieneRating(0)
-                        .longitude(0.00)
-                        .latitude(0.00)
+                        .location(new Location(0.0,0.0))
                         .build();
     }
 

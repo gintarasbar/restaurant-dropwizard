@@ -1,51 +1,64 @@
 package com.ft.restaurants.repository;
 
+import com.ft.restaurants.CSVReader;
+import com.ft.restaurants.CSVWriter;
 import com.ft.restaurants.domain.Restaurant;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-/**
- * Created by Jorge on 6/21/2016.
- */
+import static com.google.common.collect.Lists.newArrayList;
+
 public class RestaurantRepository {
-    public static Set<Restaurant> restaurants = new HashSet<>();
 
-    public Set<Restaurant> getRestaurants() {
+    public static final String INPUT_FILE = "southwark.csv";
+    private final CSVReader csvReader;
+    private final CSVWriter csvWriter;
+
+    private List<Restaurant> restaurants = Collections.synchronizedList(newArrayList());
+
+    public RestaurantRepository(CSVReader csvReader, CSVWriter csvWriter) {
+        this.csvReader = csvReader;
+        this.csvWriter = csvWriter;
+    }
+
+    public void loadData() throws Exception {
+        restaurants.clear();
+        restaurants.addAll(csvReader.readCSV(INPUT_FILE));
+    }
+
+    public List<Restaurant> getRestaurants() {
         return restaurants;
     }
 
-    public void addToRepository(Restaurant restaurant) {
+    public void addRestaurant(Restaurant restaurant) {
         this.restaurants.add(restaurant);
     }
 
-    public Restaurant findRestaurantById(UUID id) {
-        Restaurant restaurantFind = null;
-        for(Restaurant restaurant : this.restaurants) {
-            if(restaurant.getId().equals(id)) {
-                restaurantFind = restaurant;
-            }
-        }
-        return restaurantFind;
+    public Optional<Restaurant> findRestaurantById(UUID id) {
+        return this.restaurants.stream()
+                .filter(restaurant -> restaurant.getId().equals(id))
+                .findFirst();
     }
 
-    public Set<Restaurant> findRestaurantsByName(Set<Restaurant> restaurants, String regex) {
-        Set<Restaurant> restaurantMatches = new HashSet<>();
+    public List<Restaurant> findRestaurantsByName(List<Restaurant> restaurants, String regex) {
         Pattern pattern = Pattern.compile(regex);
-
-        for (Restaurant restaurant : restaurants) {
-            String restaurantName = restaurant.getName();
-            if (pattern.matcher(restaurantName).find()) {
-                restaurantMatches.add(restaurant);
-            }
-        }
-        return restaurantMatches;
+        return restaurants.stream()
+                .filter(restaurant -> pattern.matcher(restaurant.getName()).find())
+                .collect(Collectors.toList());
     }
 
-    public Set<Restaurant> findRestaurantsByAddress(Set<Restaurant> restaurants, String regex) {
-        Set<Restaurant> restaurantMatches = new HashSet<>();
+    public List<Restaurant> findRestaurantsByAddress(List<Restaurant> restaurants, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        return restaurants.stream()
+                .filter(restaurant -> pattern.matcher(restaurant.getAddress()).find())
+                .collect(Collectors.toList());
+    }
+
+    /*// TODO: use streams for restaurantbyaddress as well
+    public List<Restaurant> findRestaurantsByAddress(List<Restaurant> restaurants, String regex) {
+        List<Restaurant> restaurantMatches = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex);
 
         for (Restaurant restaurant : this.restaurants) {
@@ -55,6 +68,10 @@ public class RestaurantRepository {
             }
         }
         return restaurantMatches;
+    }*/
+
+    public void deleteRestaurantById(UUID id) {
+
     }
 }
 

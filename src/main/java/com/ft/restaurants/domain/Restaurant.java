@@ -31,12 +31,9 @@ public class Restaurant {
     private int hygieneRating;
 
     @JsonProperty
-    private double longitude;
+    private Location location;
 
-    @JsonProperty
-    private double latitude;
-
-    public Restaurant(UUID id, String name, String tag, String address, String city, String postcode, Integer hygieneRating, Double longitude, Double latitude) {
+    public Restaurant(UUID id, String name, String tag, String address, String city, String postcode, Integer hygieneRating, Location location) {
         this.id = id;
         this.name = name;
         this.tag = tag;
@@ -44,8 +41,7 @@ public class Restaurant {
         this.city = city;
         this.postcode = postcode;
         this.hygieneRating = hygieneRating;
-        this.longitude = longitude;
-        this.latitude = latitude;
+        this.location = location;
     }
 
     public UUID getId() {
@@ -76,52 +72,21 @@ public class Restaurant {
         return hygieneRating;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
+    public Location getLocation() {
+        return location;
     }
 
     // FOR PUT
-    public RestaurantBuilder copyUpdate(RestaurantRequest request) {
-        String updatedName = request.getName();
-        String updatedTag = request.getTag();
-        String updatedAddress = request.getAddress();
-        String updatedCity = request.getCity();
-        String updatedPostCode = request.getPostcode();
-        Integer updatedHygieneRating = request.getHygieneRating();
-        Double updatedLongitude = request.getLongitude();
-        Double updatedLatitude = request.getLatitude();
-
-        if(updatedName == "")
-             updatedName = name;
-        if (updatedTag == "")
-            updatedTag = tag;
-        if (updatedAddress == "")
-            updatedAddress = address;
-        if (updatedCity == "")
-            updatedCity = city;
-        if (updatedPostCode == "")
-            updatedPostCode = postcode;
-        if (updatedHygieneRating == 0)
-            updatedHygieneRating = hygieneRating;
-        if (updatedLongitude == 0.00)
-            updatedLongitude = longitude;
-        if (updatedLatitude == 0.00)
-            updatedLatitude = latitude;
-
+    public RestaurantBuilder copy() {
         return RestaurantBuilder.restaurantBuilder()
                 .id(id)
-                .name(updatedName)
-                .tag(updatedTag)
-                .address(updatedAddress)
-                .city(updatedCity)
-                .postcode(updatedPostCode)
-                .hygieneRating(updatedHygieneRating)
-                .longitude(updatedLongitude)
-                .latitude(updatedLatitude);
+                .name(name)
+                .tag(tag)
+                .address(address)
+                .city(city)
+                .postcode(postcode)
+                .hygieneRating(hygieneRating)
+                .location(location);
     }
 
 
@@ -134,7 +99,6 @@ public class Restaurant {
                 .city(request.getCity())
                 .postcode(request.getPostcode())
                 .hygieneRating(request.getHygieneRating())
-                .longitude(request.getLongitude())
-                .latitude(request.getLatitude());
+                .location(request.getLocation());
     }
 }

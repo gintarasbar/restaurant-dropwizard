@@ -1,43 +1,54 @@
 package com.ft.restaurants.service;
 
-import com.ft.restaurants.domain.RestaurantRequest;
+import com.ft.restaurants.domain.Distance;
+import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
+import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.repository.RestaurantRepository;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-
-/**
- * Created by Jorge on 6/19/2016.
- */
 public class RestaurantService {
 
-    RestaurantRepository repository = new RestaurantRepository();
+    private final RestaurantRepository repository;
 
-    /*public Restaurant findRestaurantById(UUID id) {
-        // TODO: Implement findById
-        *//*Restaurant restaurant;
-        return restaurant;*//*
-    }*/
+    public RestaurantService(RestaurantRepository repository) {
+        this.repository = repository;
+    }
 
-    // TODO: Implement this method
     public Restaurant createRestaurant(RestaurantRequest request) {
         Restaurant newRestaurant = Restaurant.copy(request).id(UUID.randomUUID()).build();
-        repository.addToRepository(newRestaurant);
-        // TODO: Add to RestaurantRepository
+        repository.addRestaurant(newRestaurant);
         return newRestaurant;
     }
 
-    public Restaurant updateRestaurant(Restaurant restaurant, RestaurantRequest request) {
-       // restaurant.copy().address(qsdsqds).build()
-        Restaurant updatedRestaurant = restaurant
-                                        .copyUpdate(request)
-                                        .build();
-        // restaurant = repository.findRestaurantById(restaurant.getId());
-        // TODO: UPDATE Restaurant repository
-        // repository.updateRestaurantRepository();
-        return updatedRestaurant;
+    public Restaurant updateRestaurant(Restaurant restaurant, Restaurant request) {
+        repository.deleteRestaurantById(request.getId());
+        repository.addRestaurant(request);
+        return request;
     }
 
+    public Optional<Restaurant> findRestaurantById(UUID id) {
+        return null;
+    }
+
+    public List<Restaurant> getAllRestaurants() {
+        return repository.getRestaurants();
+    }
+
+    public List<Restaurant> filterByName(List<Restaurant> allRestaurants, String name) {
+        return repository.findRestaurantsByName(allRestaurants, name);
+    }
+
+    public List<Restaurant> filterByDistance(List<Restaurant> filteredRestaurant, Double longitude, Double latitude, Double radius) {
+        Location location = new Location(longitude, latitude);
+        return filteredRestaurant
+                .stream()
+                .filter(restaurant -> Distance.distance(restaurant.getLocation(), location) <= radius)
+                .collect(Collectors.toList());
+    }
 }
 
