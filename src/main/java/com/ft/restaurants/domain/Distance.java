@@ -24,4 +24,8 @@ public class Distance {
         Double c = 2 * atan2(sqrt(a), sqrt(1-a));
         this.distance = this.earthRadius * c;
     }
+
+    public Double getDistance() {
+        return distance;
+    }
 }

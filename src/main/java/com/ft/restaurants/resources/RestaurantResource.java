@@ -8,6 +8,7 @@ import com.ft.restaurants.service.RestaurantService;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -49,10 +50,9 @@ public class RestaurantResource {
     }
 
     @GET
-    @Path("/find-by-name/{name}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findRestaurantsByName(@PathParam("name") String name) {
+    public Response findRestaurantsByName(@QueryParam("name") String name) {
         Set<Restaurant> foundRestaurants = restaurantRepository.findRestaurantsByName(restaurantRepository.getRestaurants(), name);
         return Response
                 .status(Response.Status.FOUND)
@@ -75,6 +75,25 @@ public class RestaurantResource {
                 .build();
 
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response filterRestaurants(@QueryParam("longitude") Double longitude, @QueryParam("latitude") Double latitude, @QueryParam("distance") Double distance) {
+        Location currentLocation = new Location(longitude, latitude);
+        Set<Restaurant> foundRestaurants = new HashSet<>();
+        for (Restaurant restaurant: restaurantRepository.getRestaurants()) {
+            Location restaurantLocation = new Location(restaurant.getLongitude(), restaurant.getLatitude());
+            Distance restaurantDistance = new Distance(currentLocation, restaurantLocation);
+            if (restaurantDistance.getDistance() <= distance ) {
+                foundRestaurants.add(restaurant);
+            }
+        }
+        return Response
+                .status(Response.Status.FOUND)
+                .entity(foundRestaurants)
+                .build();
+    }
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
