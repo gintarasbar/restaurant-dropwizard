@@ -37,7 +37,7 @@ public class RestaurantRepository {
 
         for (Restaurant restaurant : restaurants) {
             String restaurantName = restaurant.getName();
-            if (pattern.matcher(restaurantName).lookingAt()) {
+            if (pattern.matcher(restaurantName).find()) {
                 restaurantMatches.add(restaurant);
             }
         }
