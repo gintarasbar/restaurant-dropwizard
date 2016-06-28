@@ -1,10 +1,8 @@
 package com.ft.restaurants.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Created by Jorge on 6/26/2016.
- */
 public class Location {
     @JsonProperty
     private Double longitude;
@@ -12,7 +10,9 @@ public class Location {
     @JsonProperty
     private Double latitude;
 
-    public Location(Double longitude, double latitude) {
+    @JsonCreator
+    public Location(  @JsonProperty("longitude")Double longitude,
+                      @JsonProperty("latitude")  Double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }

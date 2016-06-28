@@ -1,15 +1,15 @@
 package com.ft.restaurants.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.ft.restaurants.domain.*;
-import com.ft.restaurants.repository.RestaurantRepository;
+import com.ft.restaurants.domain.Restaurant;
+import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.service.RestaurantService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -23,74 +23,48 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Path(RestaurantResource.RESTAURANTS_V1)
 public class RestaurantResource {
     public static final String RESTAURANTS_V1 = "/restaurants/v1";
-    private RestaurantService restaurantService = new RestaurantService();
-    private RestaurantRepository restaurantRepository = new RestaurantRepository();
+    private final RestaurantService restaurantService;
 
-    public RestaurantResource() {
-
+    public RestaurantResource(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Timed
-    public Response get(@PathParam("id") UUID id) {
-        Restaurant existingRestaurant = restaurantRepository.findRestaurantById(id);
-        if (existingRestaurant == null) {
-            // TODO: Return optional empty if not found
-            // Optional<Restaurant> empty = Optional.empty();
+    public Response getRestaurantById(@PathParam("id") UUID id) {
+        Optional<Restaurant> existingRestaurant = restaurantService.findRestaurantById(id);
+        if (existingRestaurant.isPresent()) {
             return Response
-                    .status(Response.Status.NOT_FOUND)
+                    .status(Response.Status.OK)
+                    .entity(existingRestaurant.get())
                     .build();
         }
+
         return Response
-                .status(Response.Status.FOUND)
-                .entity(existingRestaurant)
+                .status(Response.Status.NOT_FOUND)
                 .build();
     }
 
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response findRestaurantsByName(@QueryParam("name") String name) {
-        Set<Restaurant> foundRestaurants = restaurantRepository.findRestaurantsByName(restaurantRepository.getRestaurants(), name);
-        return Response
-                .status(Response.Status.FOUND)
-                .entity(foundRestaurants)
-                .build();
-    }
-
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{id}/distance")
-    public Response getRestaurantDistance(@PathParam("id") UUID id, DistanceRequest distanceRequest) {
-        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
-        Location restaurantLocation = new Location(restaurant.getLongitude(), restaurant.getLatitude());
-        Location searchLocation = new Location(distanceRequest.getLongitude(), distanceRequest.getLatitude());
-        Distance distance = new Distance(restaurantLocation, searchLocation);
-        return Response
-                .status(Response.Status.OK)
-                .entity(distance)
-                .build();
-
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response filterRestaurants(@QueryParam("longitude") Double longitude, @QueryParam("latitude") Double latitude, @QueryParam("distance") Double distance) {
-        Location currentLocation = new Location(longitude, latitude);
-        Set<Restaurant> foundRestaurants = new HashSet<>();
-        for (Restaurant restaurant: restaurantRepository.getRestaurants()) {
-            Location restaurantLocation = new Location(restaurant.getLongitude(), restaurant.getLatitude());
-            Distance restaurantDistance = new Distance(currentLocation, restaurantLocation);
-            if (restaurantDistance.getDistance() <= distance ) {
-                foundRestaurants.add(restaurant);
-            }
-        }
+    public Response filterRestaurants(@QueryParam("longitude") Double longitude, @QueryParam("latitude") Double latitude, @QueryParam("distance") Double distance, @QueryParam("name") String name) {
+        List<Restaurant> filteredRestaurant = restaurantService.filterByName(restaurantService.getAllRestaurants(), name);
+        filteredRestaurant = restaurantService.filterByDistance(filteredRestaurant, longitude, latitude, distance);
+//        Location currentLocation = new Location(longitude, latitude);
+//        Set<Restaurant> foundRestaurants = new HashSet<>();
+//        for (Restaurant restaurant: restaurantService.getRestaurants()) {
+//            Location restaurantLocation = new Location(restaurant.getLongitude(), restaurant.getLatitude());
+//            Distance restaurantDistance = new Distance(currentLocation, restaurantLocation);
+//            if (restaurantDistance.getDistance() <= distance ) {
+//                foundRestaurants.add(restaurant);
+//            }
+//        }
         return Response
                 .status(Response.Status.FOUND)
-                .entity(foundRestaurants)
+                .entity(filteredRestaurant)
                 .build();
     }
 
@@ -113,43 +87,22 @@ public class RestaurantResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}/update-restaurant")
-    public Response updateRestaurant(@PathParam("id") UUID id, RestaurantRequest restaurantRequest) {
-        Restaurant restaurant = restaurantRepository.findRestaurantById(id);
-        checkNotNull(restaurant);
-        checkArgument(id.equals(restaurant.getId()),"ids must be equal");
-        Restaurant updatedRestaurant = restaurantService.updateRestaurant(restaurant, restaurantRequest);
-        restaurant = updatedRestaurant;
+    public Response updateRestaurant(@PathParam("id") UUID id, Restaurant restaurantRequest) {
+        checkNotNull(restaurantRequest);
+        checkArgument(id.equals(restaurantRequest.getId()),"Restaurant Ids do not match");
+        Optional<Restaurant> restaurant = restaurantService.findRestaurantById(id);
+        if (restaurant.isPresent()) {
+            checkArgument(id.equals(restaurant.get().getId()), "ids must be equal");
+            Restaurant updatedRestaurant = restaurantService.updateRestaurant(restaurant.get(), restaurantRequest);
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(updatedRestaurant)
+                    .build();
+        }
+
         return Response
-                .status(Response.Status.OK)
-                .entity(restaurant)
+                .status(Response.Status.NOT_FOUND)
                 .build();
     }
 
-    @GET
-    @Path("/hello")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getGreeting() {
-        return "Hello world";
-    }
-
-    /*@GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Timed
-    public List<Restaurant> getAllRestaurants() {
-
-        return restaurantService.getRestaurants();
-    }*/
-
-    /*@GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Timed
-    public Restaurant get(@PathParam("id") UUID id) {
-        Restaurant existingRestaurant = restaurantService.findRestaurantById(id);
-        if (existingRestaurant == null) {
-            // TODO: Return optional empty if not found
-            //Optional<Restaurant> empty = Optional.empty();
-        }
-        return existingRestaurant;
-    }*/
 }

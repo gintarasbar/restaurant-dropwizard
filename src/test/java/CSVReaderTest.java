@@ -1,4 +1,5 @@
 import com.ft.restaurants.CSVReader;
+import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.domain.RestaurantBuilder;
 import org.junit.Test;
@@ -16,7 +17,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class CSVReaderTest {
     CSVReader testReader = new CSVReader();
 
-    // TODO: Fix Test failing for IDs java.lang.AssertionError: Expected: is "11111111-1111-1111-1111-000011111111" but: was "01111111-1111-1111-1111-000011111111"
     @Test
     public void shouldReadDataAndContainExpectedRestaurantIdAndName() throws Exception {
         Restaurant testRestaurant1 = new RestaurantBuilder()
@@ -27,8 +27,7 @@ public class CSVReaderTest {
                 .city("testCity1")
                 .postcode("testPostCode1")
                 .hygieneRating(0)
-                .longitude(0.00)
-                .latitude(0.00)
+                .location(new Location(0.0,0.0))
                 .build();
 
         Restaurant testRestaurant2 = new RestaurantBuilder()
@@ -39,12 +38,12 @@ public class CSVReaderTest {
                 .city("testCity2")
                 .postcode("testPostCode2")
                 .hygieneRating(1)
-                .longitude(1.11)
-                .latitude(1.11)
+                .location(new Location(1.11,1.11))
                 .build();
 
+        List<Restaurant> actualRestaurants = new ArrayList<>();
         List<Restaurant> expectedRestaurants = new ArrayList<Restaurant>();
-        List<Restaurant> actualRestaurants = new ArrayList<Restaurant>();
+
         expectedRestaurants.add(testRestaurant1);
         expectedRestaurants.add(testRestaurant2);
 

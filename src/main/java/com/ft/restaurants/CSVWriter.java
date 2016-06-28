@@ -1,12 +1,12 @@
 package com.ft.restaurants;
 
 import com.ft.restaurants.domain.Restaurant;
-import com.ft.restaurants.repository.RestaurantRepository;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class CSVWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
-    static Set<Restaurant> restaurants = RestaurantRepository.restaurants;
+    static Set<Restaurant> restaurants = new HashSet<>();
     FileWriter fileWriter = null;
     CSVPrinter csvPrinter = null;
     CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
@@ -41,9 +41,9 @@ public class CSVWriter {
                 fileWriter.append(",");
                 fileWriter.append((char) restaurant.getHygieneRating());
                 fileWriter.append(",");
-                fileWriter.append((char) restaurant.getLongitude());
+                fileWriter.append(String.valueOf(restaurant.getLocation().getLongitude()));
                 fileWriter.append(",");
-                fileWriter.append((char) restaurant.getLatitude());
+                fileWriter.append(String.valueOf(restaurant.getLocation().getLatitude()));
                 fileWriter.append("\n");
             }
             // csvPrinter = new CSVPrinter(fileWriter, csvFormat);
