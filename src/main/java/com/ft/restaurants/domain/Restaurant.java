@@ -1,8 +1,11 @@
 package com.ft.restaurants.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Jorge on 6/18/2016.
@@ -33,9 +36,17 @@ public class Restaurant {
     @JsonProperty
     private Location location;
 
-    public Restaurant(UUID id, String name, String tag, String address, String city, String postcode, Integer hygieneRating, Location location) {
-        this.id = id;
-        this.name = name;
+    @JsonCreator
+    public Restaurant(@JsonProperty("id") UUID id,
+                      @JsonProperty("name") String name,
+                      @JsonProperty("tag") String tag,
+                      @JsonProperty("address") String address,
+                      @JsonProperty("city") String city,
+                      @JsonProperty("postcode") String postcode,
+                      @JsonProperty("hygieneRating") Integer hygieneRating,
+                      @JsonProperty("location") Location location) {
+        this.id = checkNotNull(id, "Restaurant id cannot be null");
+        this.name = checkNotNull(name, "Restaurant name cannot be null");
         this.tag = tag;
         this.address = address;
         this.city = city;

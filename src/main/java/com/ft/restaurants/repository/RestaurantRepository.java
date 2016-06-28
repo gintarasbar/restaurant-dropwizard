@@ -2,9 +2,14 @@ package com.ft.restaurants.repository;
 
 import com.ft.restaurants.CSVReader;
 import com.ft.restaurants.CSVWriter;
+import com.ft.restaurants.domain.Distance;
+import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -46,6 +51,14 @@ public class RestaurantRepository {
         Pattern pattern = Pattern.compile(regex);
         return restaurants.stream()
                 .filter(restaurant -> pattern.matcher(restaurant.getName()).find())
+                .collect(Collectors.toList());
+    }
+
+    public List<Restaurant> findRestaurantsByDistance(List<Restaurant> restaurants, Double longitude, Double latitude, Double radius) {
+        Location location = new Location(longitude, latitude);
+        return restaurants
+                .stream()
+                .filter(restaurant -> Distance.distance(restaurant.getLocation(), location) <= radius)
                 .collect(Collectors.toList());
     }
 

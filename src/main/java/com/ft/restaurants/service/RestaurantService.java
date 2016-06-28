@@ -1,7 +1,5 @@
 package com.ft.restaurants.service;
 
-import com.ft.restaurants.domain.Distance;
-import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.repository.RestaurantRepository;
@@ -9,7 +7,6 @@ import com.ft.restaurants.repository.RestaurantRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class RestaurantService {
 
@@ -32,7 +29,7 @@ public class RestaurantService {
     }
 
     public Optional<Restaurant> findRestaurantById(UUID id) {
-        return null;
+        return repository.findRestaurantById(id);
     }
 
     public List<Restaurant> getAllRestaurants() {
@@ -43,12 +40,13 @@ public class RestaurantService {
         return repository.findRestaurantsByName(allRestaurants, name);
     }
 
-    public List<Restaurant> filterByDistance(List<Restaurant> filteredRestaurant, Double longitude, Double latitude, Double radius) {
-        Location location = new Location(longitude, latitude);
+    public List<Restaurant> filterByDistance(List<Restaurant> allRestaurants, Double longitude, Double latitude, Double radius) {
+        return repository.findRestaurantsByDistance(allRestaurants, longitude, latitude, radius);
+        /*Location location = new Location(longitude, latitude);
         return filteredRestaurant
                 .stream()
                 .filter(restaurant -> Distance.distance(restaurant.getLocation(), location) <= radius)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
     }
 }
 
