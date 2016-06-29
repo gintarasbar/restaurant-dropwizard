@@ -5,6 +5,7 @@ import com.ft.restaurants.CSVWriter;
 import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.domain.RestaurantBuilder;
+import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,29 +82,44 @@ public class RestaurantRepositoryTest {
         assertThat(sut.findRestaurantById(id).isPresent(), is(false));
     }
 
+    @Test
+    public void shouldDeleteRestaurantById() {
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Restaurant restaurant2 = restaurant.copy()
+                .id(id)
+                .build();
+
+        sut.addRestaurant(restaurant2);
+        assertThat(sut.findRestaurantById(id).isPresent(), is(true));
+        sut.deleteRestaurantById(id);
+        assertThat(sut.findRestaurantById(id).isPresent(), is(false));
+    }
+
     // TODO: Implement for the other methods
     @Test
     public void findRestaurantsByName() throws Exception {
         UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        String name = "testName";
+        String name = "testName2";
         Restaurant restaurant2 = restaurant.copy()
                     .id(id)
                     .name(name)
                     .build();
         sut.addRestaurant(restaurant2);
-        assertThat(sut.findRestaurantsByName(sut.getRestaurants(), name).get(1), is(restaurant2));
+        // assertThat(sut.findRestaurantsByName(sut.getRestaurants(), name).get(1), is(restaurant2));
+        assertThat(sut.findRestaurantsByName(sut.getRestaurants(), name), IsIterableContainingInOrder.contains(restaurant2));
     }
 
     @Test
     public void findRestaurantsByAddress() throws Exception {
         UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-        String address = "testAddress";
+        String address = "testAddress2";
         Restaurant restaurant2 = restaurant.copy()
                     .id(id)
                     .address(address)
                     .build();
         sut.addRestaurant(restaurant2);
-        assertThat(sut.findRestaurantsByAddress(sut.getRestaurants(), address).get(1), is(restaurant2));
+        //assertThat(sut.findRestaurantsByAddress(sut.getRestaurants(), address).get(1), is(restaurant2));
+        assertThat(sut.findRestaurantsByAddress(sut.getRestaurants(), address), IsIterableContainingInOrder.contains(restaurant2));
     }
 
 }
