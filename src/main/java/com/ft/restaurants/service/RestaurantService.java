@@ -34,7 +34,6 @@ public class RestaurantService {
                 .hygieneRating(request.getHygieneRating())
                 .location(request.getLocation())
                 .build();
-
         repository.deleteRestaurantById(restaurant.getId());
         repository.addRestaurant(updateRestaurant);
         return request;
@@ -59,6 +58,14 @@ public class RestaurantService {
                 .stream()
                 .filter(restaurant -> Distance.distance(restaurant.getLocation(), location) <= radius)
                 .collect(Collectors.toList());*/
+    }
+
+    public void saveCSV() {
+        try {
+            repository.saveData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

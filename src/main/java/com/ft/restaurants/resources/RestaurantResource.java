@@ -68,6 +68,16 @@ public class RestaurantResource {
                 .build();
     }
 
+    @GET
+    @Path("save")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response saveCSV() {
+        restaurantService.saveCSV();
+        return Response
+                .status(Response.Status.OK)
+                .build();
+    }
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

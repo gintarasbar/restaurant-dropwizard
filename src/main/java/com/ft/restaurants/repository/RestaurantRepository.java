@@ -30,6 +30,10 @@ public class RestaurantRepository {
         restaurants.addAll(csvReader.readCSV(INPUT_FILE));
     }
 
+    public void saveData() throws Exception {
+        csvWriter.writeCSV("southwarkwritetest.csv", restaurants);
+    }
+
     public List<Restaurant> getRestaurants() {
         return restaurants;
     }

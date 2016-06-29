@@ -1,31 +1,22 @@
 package com.ft.restaurants;
 
 import com.ft.restaurants.domain.Restaurant;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-/**
- * Created by Jorge on 6/22/2016.
- */
 public class CSVWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
-    static Set<Restaurant> restaurants = new HashSet<>();
-    FileWriter fileWriter = null;
-    CSVPrinter csvPrinter = null;
-    CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+    // List<Restaurant> restaurants = newArrayList();
 
-    public static void writeCSV(String file) throws IOException {
-        FileWriter fileWriter = null;
-        CSVPrinter csvPrinter = null;
-        CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+    //CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
 
+    public static void writeCSV(String file, List<Restaurant> restaurants) throws IOException {
+        FileWriter fileWriter = new FileWriter(new File("src/main/resources/" + file), true);
         try {
-            fileWriter = new FileWriter(file, true);
+            //fileWriter = new FileWriter(Resources.getResource(file).getPath(), true);
             for (Restaurant restaurant : restaurants) {
                 fileWriter.append(restaurant.getId().toString());
                 fileWriter.append(",");
@@ -41,12 +32,13 @@ public class CSVWriter {
                 fileWriter.append(",");
                 fileWriter.append(restaurant.getPostcode());
                 fileWriter.append(",");
-                fileWriter.append((char) restaurant.getHygieneRating());
+                fileWriter.append(String.valueOf(restaurant.getHygieneRating()));
                 fileWriter.append(",");
                 fileWriter.append(String.valueOf(restaurant.getLocation().getLongitude()));
                 fileWriter.append(",");
                 fileWriter.append(String.valueOf(restaurant.getLocation().getLatitude()));
                 fileWriter.append("\n");
+
             }
             // csvPrinter = new CSVPrinter(fileWriter, csvFormat);
         } catch (IOException e) {
@@ -63,6 +55,5 @@ public class CSVWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
