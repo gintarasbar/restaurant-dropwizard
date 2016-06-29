@@ -6,10 +6,7 @@ import com.ft.restaurants.domain.Distance;
 import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -84,7 +81,14 @@ public class RestaurantRepository {
     }*/
 
     public void deleteRestaurantById(UUID id) {
+        Iterator<Restaurant> iterator = restaurants.iterator();
 
+        while(iterator.hasNext()) {
+            Restaurant restaurant = iterator.next();
+            if(restaurant.getId().equals(id)) {
+                iterator.remove();
+            }
+        }
     }
 }
 
