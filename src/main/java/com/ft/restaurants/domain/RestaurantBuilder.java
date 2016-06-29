@@ -13,8 +13,7 @@ public final class RestaurantBuilder {
     private String city;
     private String postcode;
     private int hygieneRating;
-    private double longitude;
-    private double latitude;
+    private Location location;
 
     public RestaurantBuilder() {
     }
@@ -58,18 +57,14 @@ public final class RestaurantBuilder {
         return this;
     }
 
-    public RestaurantBuilder longitude(double longitude) {
-        this.longitude = longitude;
+    public RestaurantBuilder location(Location location) {
+        this.location = location;
         return this;
     }
 
-    public RestaurantBuilder latitude(double latitude) {
-        this.latitude = latitude;
-        return this;
-    }
 
     public Restaurant build() {
-        Restaurant restaurant = new Restaurant(id, name, tag, address, city, postcode, hygieneRating, longitude, latitude);
+        Restaurant restaurant = new Restaurant(id, name, tag, address, city, postcode, hygieneRating, location);
         return restaurant;
     }
 }
