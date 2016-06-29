@@ -31,6 +31,8 @@ public class CSVWriter {
                 fileWriter.append(",");
                 fileWriter.append(restaurant.getName());
                 fileWriter.append(",");
+                fileWriter.append(restaurant.getDescription());
+                fileWriter.append(",");
                 fileWriter.append(restaurant.getTag());
                 fileWriter.append(",");
                 fileWriter.append(restaurant.getAddress());
