@@ -97,7 +97,6 @@ public class RestaurantRepositoryTest {
     @Test
     public void findRestaurantsByAddress() throws Exception {
         UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
-
         String address = "testAddress";
         Restaurant restaurant2 = restaurant.copy()
                     .id(id)

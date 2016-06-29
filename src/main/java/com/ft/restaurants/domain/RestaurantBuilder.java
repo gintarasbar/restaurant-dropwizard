@@ -8,11 +8,12 @@ import java.util.UUID;
 public final class RestaurantBuilder {
     private UUID id;
     private String name;
+    private String description;
     private String tag;
     private String address;
     private String city;
     private String postcode;
-    private int hygieneRating;
+    private Integer hygieneRating;
     private Location location;
 
     public RestaurantBuilder() {
@@ -29,6 +30,11 @@ public final class RestaurantBuilder {
 
     public RestaurantBuilder name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public RestaurantBuilder description(String description) {
+        this.description = description;
         return this;
     }
 
@@ -52,7 +58,7 @@ public final class RestaurantBuilder {
         return this;
     }
 
-    public RestaurantBuilder hygieneRating(int hygieneRating) {
+    public RestaurantBuilder hygieneRating(Integer hygieneRating) {
         this.hygieneRating = hygieneRating;
         return this;
     }
@@ -64,7 +70,7 @@ public final class RestaurantBuilder {
 
 
     public Restaurant build() {
-        Restaurant restaurant = new Restaurant(id, name, tag, address, city, postcode, hygieneRating, location);
+        Restaurant restaurant = new Restaurant(id, name, description, tag, address, city, postcode, hygieneRating, location);
         return restaurant;
     }
 }

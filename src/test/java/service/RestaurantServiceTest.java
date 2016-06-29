@@ -34,7 +34,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void createRestaurantShouldBuildRestaurantAndAddToRepo() {
-        RestaurantRequest restaurantRequest = new RestaurantRequest("testName", "testTag",
+        RestaurantRequest restaurantRequest = new RestaurantRequest("testName", "testDescription", "testTag",
                 "testAddress", "testCity", "testPostCode",
                 0, new Location(0.00, 0.00));
 

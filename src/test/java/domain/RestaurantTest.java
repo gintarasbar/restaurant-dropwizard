@@ -13,7 +13,7 @@ import org.junit.Test;
 import java.util.UUID;
 
 import static io.dropwizard.testing.FixtureHelpers.fixture;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
@@ -63,8 +63,6 @@ public class RestaurantTest {
         assertThat(actual.getName(), is(expected.getName()));
         assertThat(actual, is(expected));
     }
-
-
 
 
 }

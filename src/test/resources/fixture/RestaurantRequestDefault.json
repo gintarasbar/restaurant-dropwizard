@@ -1,0 +1,12 @@
+{
+  "name" : "testName",
+  "description": "",
+  "tag": "",
+  "address": "",
+  "city": "",
+  "postcode": "",
+  "location": {
+    "longitude": 0,
+    "latitude": 0
+  }
+}

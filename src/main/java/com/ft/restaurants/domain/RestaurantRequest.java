@@ -18,6 +18,9 @@ public class RestaurantRequest {
     private String name;
 
     @JsonProperty
+    private String description;
+
+    @JsonProperty
     private String tag;
 
     @JsonProperty
@@ -30,7 +33,7 @@ public class RestaurantRequest {
     private String postcode;
 
     @JsonProperty
-    private int hygieneRating;
+    private Integer hygieneRating;
 
     @JsonProperty
     private Location location;
@@ -38,13 +41,15 @@ public class RestaurantRequest {
     @JsonCreator
     public RestaurantRequest(
             @JsonProperty("name") String name,
+            @JsonProperty("description") String description,
             @JsonProperty("tag") String tag,
             @JsonProperty("address") String address,
             @JsonProperty("city") String city,
             @JsonProperty("postcode") String postcode,
-            @JsonProperty("hygieneRating") int hygieneRating,
+            @JsonProperty("hygieneRating") Integer hygieneRating,
             @JsonProperty("location") Location location) {
         this.name = checkNotNull(name, "Restaurant name cannot be null");
+        this.description = defaultIfNull(description, "");
         this.tag = defaultIfNull(tag, "");
         this.address = defaultIfNull(address, "");
         this.city = defaultIfNull(city, "");
@@ -56,6 +61,8 @@ public class RestaurantRequest {
     public String getName() {
         return name;
     }
+
+    public String getDescription() { return description; }
 
     public String getTag() {
         return tag;
@@ -73,7 +80,7 @@ public class RestaurantRequest {
         return postcode;
     }
 
-    public int getHygieneRating() {
+    public Integer getHygieneRating() {
         return hygieneRating;
     }
 

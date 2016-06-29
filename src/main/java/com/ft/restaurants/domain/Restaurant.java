@@ -19,6 +19,9 @@ public class Restaurant {
     private String name;
 
     @JsonProperty
+    private String description;
+
+    @JsonProperty
     private String tag;
 
     @JsonProperty
@@ -31,7 +34,7 @@ public class Restaurant {
     private String postcode;
 
     @JsonProperty
-    private int hygieneRating;
+    private Integer hygieneRating;
 
     @JsonProperty
     private Location location;
@@ -39,6 +42,7 @@ public class Restaurant {
     @JsonCreator
     public Restaurant(@JsonProperty("id") UUID id,
                       @JsonProperty("name") String name,
+                      @JsonProperty("description") String description,
                       @JsonProperty("tag") String tag,
                       @JsonProperty("address") String address,
                       @JsonProperty("city") String city,
@@ -47,6 +51,7 @@ public class Restaurant {
                       @JsonProperty("location") Location location) {
         this.id = checkNotNull(id, "Restaurant id cannot be null");
         this.name = checkNotNull(name, "Restaurant name cannot be null");
+        this.description = description;
         this.tag = tag;
         this.address = address;
         this.city = city;
@@ -55,13 +60,13 @@ public class Restaurant {
         this.location = location;
     }
 
-    public UUID getId() {
-        return id;
-    }
+    public UUID getId() { return id; }
 
     public String getName() {
         return name;
     }
+
+    public String getDescription() { return description; }
 
     public String getTag() {
         return tag;
@@ -92,6 +97,7 @@ public class Restaurant {
         return RestaurantBuilder.restaurantBuilder()
                 .id(id)
                 .name(name)
+                .description(description)
                 .tag(tag)
                 .address(address)
                 .city(city)
@@ -105,6 +111,7 @@ public class Restaurant {
     public static RestaurantBuilder copy(RestaurantRequest request) {
         return RestaurantBuilder.restaurantBuilder()
                 .name(request.getName())
+                .description(request.getDescription())
                 .tag(request.getTag())
                 .address(request.getAddress())
                 .city(request.getCity())
