@@ -34,11 +34,10 @@ public class CSVWriter {
                 fileWriter.append(",");
                 fileWriter.append(String.valueOf(restaurant.getHygieneRating()));
                 fileWriter.append(",");
-                fileWriter.append(String.valueOf(restaurant.getLocation().getLongitude()));
+                fileWriter.append(String.format("%.6f", restaurant.getLocation().getLongitude()));
                 fileWriter.append(",");
-                fileWriter.append(String.valueOf(restaurant.getLocation().getLatitude()));
+                fileWriter.append(String.format("%.6f", restaurant.getLocation().getLatitude()));
                 fileWriter.append("\n");
-
             }
             // csvPrinter = new CSVPrinter(fileWriter, csvFormat);
         } catch (IOException e) {

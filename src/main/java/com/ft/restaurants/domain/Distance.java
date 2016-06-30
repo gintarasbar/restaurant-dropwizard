@@ -1,7 +1,7 @@
 package com.ft.restaurants.domain;
 
 
-import static java.lang.StrictMath.*;
+import static java.lang.Math.*;
 
 public class Distance {
     private final static Double earthRadius = 6371.00;
@@ -17,6 +17,5 @@ public class Distance {
         Double c = 2 * atan2(sqrt(a), sqrt(1-a));
         return earthRadius * c;
     }
-
 
 }

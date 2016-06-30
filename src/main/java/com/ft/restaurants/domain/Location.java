@@ -11,8 +11,8 @@ public class Location {
     private Double latitude;
 
     @JsonCreator
-    public Location(  @JsonProperty("longitude")Double longitude,
-                      @JsonProperty("latitude")  Double latitude) {
+    public Location(@JsonProperty("longitude")Double longitude,
+                    @JsonProperty("latitude")  Double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }
