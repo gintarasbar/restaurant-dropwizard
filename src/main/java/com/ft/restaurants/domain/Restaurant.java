@@ -84,7 +84,7 @@ public class Restaurant {
         return postcode;
     }
 
-    public int getHygieneRating() {
+    public Integer getHygieneRating() {
         return hygieneRating;
     }
 

@@ -23,8 +23,19 @@ public class RestaurantService {
     }
 
     public Restaurant updateRestaurant(Restaurant restaurant, Restaurant request) {
-        repository.deleteRestaurantById(request.getId());
-        repository.addRestaurant(request);
+        Restaurant updateRestaurant = restaurant.copy()
+                .id(restaurant.getId())
+                .name(request.getName())
+                .description(request.getDescription())
+                .tag(request.getTag())
+                .address(request.getAddress())
+                .city(request.getCity())
+                .postcode(request.getPostcode())
+                .hygieneRating(request.getHygieneRating())
+                .location(request.getLocation())
+                .build();
+        repository.deleteRestaurantById(restaurant.getId());
+        repository.addRestaurant(updateRestaurant);
         return request;
     }
 
@@ -47,6 +58,14 @@ public class RestaurantService {
                 .stream()
                 .filter(restaurant -> Distance.distance(restaurant.getLocation(), location) <= radius)
                 .collect(Collectors.toList());*/
+    }
+
+    public void saveCSV() {
+        try {
+            repository.saveData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
