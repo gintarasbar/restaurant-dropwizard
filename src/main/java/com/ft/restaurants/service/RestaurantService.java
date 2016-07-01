@@ -44,6 +44,9 @@ public class RestaurantService {
     public Restaurant tagRestaurant(Restaurant restaurant, TagRequest tag) {
         String newTags = restaurant.getTag() + "/" + tag.getTag();
 
+        if(tag.getTag().equals(""))
+            newTags = restaurant.getTag();
+
         Restaurant taggedRestaurant = restaurant.copy()
                 .id(restaurant.getId())
                 .name(restaurant.getName())

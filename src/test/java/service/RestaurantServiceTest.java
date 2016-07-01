@@ -1,8 +1,8 @@
 package service;
 
 import com.ft.restaurants.domain.Location;
-import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.domain.Restaurant;
+import com.ft.restaurants.domain.RestaurantRequest;
 import com.ft.restaurants.repository.RestaurantRepository;
 import com.ft.restaurants.service.RestaurantService;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void createRestaurantShouldBuildRestaurantAndAddToRepo() {
-        RestaurantRequest restaurantRequest = new RestaurantRequest("testName", "testDescription", "testTag",
+        RestaurantRequest restaurantRequest = new RestaurantRequest("testName", "testDescription", "testType", "testTag",
                 "testAddress", "testCity", "testPostCode",
                 0, new Location(0.00, 0.00));
 

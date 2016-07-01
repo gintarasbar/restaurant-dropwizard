@@ -65,7 +65,7 @@ public class RestaurantResource {
 //        }
         return Response
                 .status(Response.Status.FOUND)
-                .entity(filteredRestaurant.subList(0,Math.min(2,filteredRestaurant.size())))
+                .entity(filteredRestaurant.subList(0,Math.min(20,filteredRestaurant.size())))
                 .build();
     }
 

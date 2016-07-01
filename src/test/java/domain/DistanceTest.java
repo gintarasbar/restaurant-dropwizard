@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.closeTo;
 
 public class DistanceTest {
     @Rule
@@ -16,13 +16,26 @@ public class DistanceTest {
     @Test
     public void shouldReturnCorrectDistanceWithGivenCoordinates() {
         Location testLocation1 = new Location(74.0059, 40.7128);
-        Location testLocation2 = new Location(34.0522, 118.2437);
+        Location testLocation2 = new Location(118.2437, 34.0522);
 
         Distance distance = new Distance();
 
-        Double expectedDistance = 9062.0;
-        Double actualDistance = Math.floor(distance.distance(testLocation1, testLocation2));
+        Double expectedDistance = 3949.0;
+        Double actualDistance = distance.distance(testLocation1, testLocation2);
 
-        assertThat(actualDistance, is(expectedDistance));
+        assertThat(actualDistance, closeTo(expectedDistance,683));
+    }
+
+    @Test
+    public void shouldReturnCorrectDistanceWithGivenCoordinates2() {
+        Location testLocation1 = new Location(-0.0951233, 51.5077467);
+        Location testLocation2 = new Location(-0.0998006, 51.5056301);
+
+        Distance distance = new Distance();
+
+        Double expectedDistance = 0.269;
+        Double actualDistance = distance.distance(testLocation1, testLocation2);
+
+        assertThat(actualDistance, closeTo(expectedDistance,0.03));
     }
 }
