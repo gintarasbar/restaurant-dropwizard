@@ -22,6 +22,9 @@ public class Restaurant {
     private String description;
 
     @JsonProperty
+    private String type;
+
+    @JsonProperty
     private String tag;
 
     @JsonProperty
@@ -43,6 +46,7 @@ public class Restaurant {
     public Restaurant(@JsonProperty("id") UUID id,
                       @JsonProperty("name") String name,
                       @JsonProperty("description") String description,
+                      @JsonProperty("type") String type,
                       @JsonProperty("tag") String tag,
                       @JsonProperty("address") String address,
                       @JsonProperty("city") String city,
@@ -52,6 +56,7 @@ public class Restaurant {
         this.id = checkNotNull(id, "Restaurant id cannot be null");
         this.name = checkNotNull(name, "Restaurant name cannot be null");
         this.description = description;
+        this.type = type;
         this.tag = tag;
         this.address = address;
         this.city = city;
@@ -67,6 +72,8 @@ public class Restaurant {
     }
 
     public String getDescription() { return description; }
+
+    public String getType() { return type; }
 
     public String getTag() {
         return tag;
@@ -88,9 +95,7 @@ public class Restaurant {
         return hygieneRating;
     }
 
-    public Location getLocation() {
-        return location;
-    }
+    public Location getLocation() { return location; }
 
     // FOR PUT
     public RestaurantBuilder copy() {
@@ -98,6 +103,7 @@ public class Restaurant {
                 .id(id)
                 .name(name)
                 .description(description)
+                .type(type)
                 .tag(tag)
                 .address(address)
                 .city(city)
@@ -112,6 +118,7 @@ public class Restaurant {
         return RestaurantBuilder.restaurantBuilder()
                 .name(request.getName())
                 .description(request.getDescription())
+                .type(request.getType())
                 .tag(request.getTag())
                 .address(request.getAddress())
                 .city(request.getCity())

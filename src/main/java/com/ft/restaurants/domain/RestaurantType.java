@@ -1,8 +1,15 @@
 package com.ft.restaurants.domain;
 
-/**
- * Created by Jorge on 6/20/2016.
- */
-public class RestaurantType {
+public enum RestaurantType {
+    BURGER("Burger"), ASIAN("Asian"), OTHER("Other"), NULL("");
 
+    private String type;
+
+    RestaurantType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

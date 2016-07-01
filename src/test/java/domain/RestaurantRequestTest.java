@@ -35,6 +35,7 @@ public class RestaurantRequestTest {
         sut = new RestaurantRequest(
                 "testName",
                 "testDescription",
+                "testType",
                 "testTag",
                 "testAddress",
                 "testCity",
@@ -63,6 +64,7 @@ public class RestaurantRequestTest {
         Location location = new Location(0.0, 0.0);
         RestaurantRequest request = new RestaurantRequest(
                 "testName",
+                null,
                 null,
                 null,
                 null,
