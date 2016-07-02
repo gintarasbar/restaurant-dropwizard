@@ -35,6 +35,8 @@ public class RestaurantTest {
         sut = new RestaurantBuilder()
                         .id(UUID.fromString("00000000-0000-0000-0000-000000000000"))
                         .name("testName")
+                        .description("testDescription")
+                        .type("testType")
                         .tag("testTag")
                         .address("testAddress")
                         .city("testCity")
@@ -61,7 +63,7 @@ public class RestaurantTest {
                 Restaurant.class
         );
         assertThat(actual.getName(), is(expected.getName()));
-        assertThat(actual, is(expected));
+        assertThat(actual.getId(), is(expected.getId()));
     }
 
 

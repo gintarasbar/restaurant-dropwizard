@@ -1,4 +1,4 @@
-Id,Name,Tags,Address,City,Postcode,Hygiene_rating,Longitude,Latitude
-00000000-0000-0000-0000-00000000,testName1,testTag1,testAddress1,testCity1,testPostcode1,0,0.00,0.00
-11111111-1111-1111-1111-11111111,testName2,testTag2,testAddress2,testCity2,testPostcode2,1,1.11,1.11
+Id,Name,Description,Type,Tags,Address,City,Postcode,Hygiene_rating,Longitude,Latitude
+00000000-0000-0000-0000-00000000,testName1,testDescription1,testType1,testTag1,testAddress1,testCity1,testPostcode1,0,0.00,0.00
+11111111-1111-1111-1111-11111111,testName2,testDescription2,testType2,testTag2,testAddress2,testCity2,testPostcode2,1,1.11,1.11
 

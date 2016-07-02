@@ -14,7 +14,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class RestaurantRepository {
 
-    public static final String INPUT_FILE = "southwark2.csv";
+    public static final String INPUT_FILE = "southwark3.csv";
     private final CSVReader csvReader;
     private final CSVWriter csvWriter;
 
