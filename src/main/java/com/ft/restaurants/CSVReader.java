@@ -2,7 +2,6 @@ package com.ft.restaurants;
 
 import com.ft.restaurants.domain.Location;
 import com.ft.restaurants.domain.Restaurant;
-import com.ft.restaurants.domain.RestaurantType;
 import com.google.common.io.Resources;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

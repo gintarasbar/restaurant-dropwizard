@@ -122,4 +122,27 @@ public class RestaurantRepositoryTest {
         assertThat(sut.findRestaurantsByAddress(sut.getRestaurants(), address), IsIterableContainingInOrder.contains(restaurant2));
     }
 
+    @Test
+    public void shouldFindRestaurantByDistance() throws Exception {
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Location location = new Location(10.0, 10.0);
+        Restaurant restaurant2 = restaurant.copy()
+                .id(id)
+                .location(location)
+                .build();
+        sut.addRestaurant(restaurant2);
+        assertThat(sut.findRestaurantsByDistance(sut.getRestaurants(), 10.00, 10.00, 0.0), IsIterableContainingInOrder.contains(restaurant2));
+    }
+
+    @Test
+    public void shouldNotFindRestaurantByDistance() throws Exception {
+        UUID id = UUID.fromString("00000000-0000-0000-0000-000000000001");
+        Location location = new Location(10.0, 10.0);
+        Restaurant restaurant2 = restaurant.copy()
+                .id(id)
+                .location(location)
+                .build();
+        sut.addRestaurant(restaurant2);
+        assertThat(sut.findRestaurantsByDistance(sut.getRestaurants(), 11.00, 11.00, 0.0).isEmpty(), is(true));
+    }
 }
