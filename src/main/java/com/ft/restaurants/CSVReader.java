@@ -21,10 +21,11 @@ import static com.google.common.collect.Lists.newArrayList;
 public class CSVReader {
     private static final String NEW_LINE_SEPARATOR = "\n";
 
-    private static final String[] CSV_HEADER = {"Id", "Name", "Description", "Tags", "Address", "City", "Postcode", "Hygiene_rating", "Longitude", "Latitude"};
+    private static final String[] CSV_HEADER = {"Id", "Name", "Description", "Type", "Tags", "Address", "City", "Postcode", "Hygiene_rating", "Longitude", "Latitude"};
     private static final String RESTAURANT_ID = "Id";
     private static final String RESTAURANT_NAME = "Name";
     private static final String RESTAURANT_DESCRIPTION = "Description";
+    private static final String RESTAURANT_TYPE = "Type";
     private static final String RESTAURANT_TAG = "Tags";
     private static final String RESTAURANT_ADDRESS = "Address";
     private static final String RESTAURANT_CITY = "City";
@@ -54,6 +55,7 @@ public class CSVReader {
                 Restaurant restaurant = new Restaurant(UUID.fromString(record.get(RESTAURANT_ID)),
                         record.get(RESTAURANT_NAME),
                         record.get(RESTAURANT_DESCRIPTION),
+                        record.get(RESTAURANT_TYPE),
                         record.get(RESTAURANT_TAG),
                         record.get(RESTAURANT_ADDRESS),
                         record.get(RESTAURANT_CITY),

@@ -1,6 +1,7 @@
 {
     "name": "testName",
     "description": "testDescription",
+    "type": "testType",
     "tag": "testTag",
     "address": "testAddress",
     "city": "testCity",

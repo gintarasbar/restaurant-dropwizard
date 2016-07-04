@@ -21,6 +21,9 @@ public class RestaurantRequest {
     private String description;
 
     @JsonProperty
+    private String type;
+
+    @JsonProperty
     private String tag;
 
     @JsonProperty
@@ -42,6 +45,7 @@ public class RestaurantRequest {
     public RestaurantRequest(
             @JsonProperty("name") String name,
             @JsonProperty("description") String description,
+            @JsonProperty("type") String type,
             @JsonProperty("tag") String tag,
             @JsonProperty("address") String address,
             @JsonProperty("city") String city,
@@ -50,6 +54,7 @@ public class RestaurantRequest {
             @JsonProperty("location") Location location) {
         this.name = checkNotNull(name, "Restaurant name cannot be null");
         this.description = defaultIfNull(description, "");
+        this.type = defaultIfNull(type, "Other");
         this.tag = defaultIfNull(tag, "");
         this.address = defaultIfNull(address, "");
         this.city = defaultIfNull(city, "");
@@ -63,6 +68,8 @@ public class RestaurantRequest {
     }
 
     public String getDescription() { return description; }
+
+    public String getType() { return type; }
 
     public String getTag() {
         return tag;

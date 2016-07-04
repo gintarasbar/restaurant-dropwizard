@@ -14,7 +14,7 @@ public class CSVWriter {
     //CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
 
     public static void writeCSV(String file, List<Restaurant> restaurants) throws IOException {
-        FileWriter fileWriter = new FileWriter(new File("src/main/resources/" + file), true);
+        FileWriter fileWriter = new FileWriter(new File("src/main/resources/" + file), false);
         try {
             //fileWriter = new FileWriter(Resources.getResource(file).getPath(), true);
             for (Restaurant restaurant : restaurants) {
@@ -23,6 +23,8 @@ public class CSVWriter {
                 fileWriter.append(restaurant.getName());
                 fileWriter.append(",");
                 fileWriter.append(restaurant.getDescription());
+                fileWriter.append(",");
+                fileWriter.append(restaurant.getType().toString());
                 fileWriter.append(",");
                 fileWriter.append(restaurant.getTag());
                 fileWriter.append(",");
@@ -34,11 +36,10 @@ public class CSVWriter {
                 fileWriter.append(",");
                 fileWriter.append(String.valueOf(restaurant.getHygieneRating()));
                 fileWriter.append(",");
-                fileWriter.append(String.valueOf(restaurant.getLocation().getLongitude()));
+                fileWriter.append(String.format("%.6f", restaurant.getLocation().getLongitude()));
                 fileWriter.append(",");
-                fileWriter.append(String.valueOf(restaurant.getLocation().getLatitude()));
+                fileWriter.append(String.format("%.6f", restaurant.getLocation().getLatitude()));
                 fileWriter.append("\n");
-
             }
             // csvPrinter = new CSVPrinter(fileWriter, csvFormat);
         } catch (IOException e) {

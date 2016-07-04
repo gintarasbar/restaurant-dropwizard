@@ -35,6 +35,7 @@ public class RestaurantRequestTest {
         sut = new RestaurantRequest(
                 "testName",
                 "testDescription",
+                "testType",
                 "testTag",
                 "testAddress",
                 "testCity",
@@ -55,7 +56,7 @@ public class RestaurantRequestTest {
     public void deserializesJSON() throws IOException {
         RestaurantRequest expected = sut;
         RestaurantRequest actual = MAPPER.readValue(fixture("fixture/RestaurantRequest.json"), RestaurantRequest.class);
-        assertThat(actual, is(expected));
+        assertThat(actual.getName(), is(expected.getName()));
     }
 
     @Test
@@ -63,6 +64,7 @@ public class RestaurantRequestTest {
         Location location = new Location(0.0, 0.0);
         RestaurantRequest request = new RestaurantRequest(
                 "testName",
+                null,
                 null,
                 null,
                 null,
