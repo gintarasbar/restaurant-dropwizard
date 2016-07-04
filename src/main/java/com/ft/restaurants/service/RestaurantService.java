@@ -78,11 +78,39 @@ public class RestaurantService {
         return allRestaurants;
     }
 
+    public List<Restaurant> filterByTag(List<Restaurant> allRestaurants, String tag) {
+        if(!StringUtils.isBlank(tag)) {
+            return repository.findRestaurantsByTag(allRestaurants, tag);
+        }
+        return allRestaurants;
+    }
+
     public List<Restaurant> filterByDistance(List<Restaurant> allRestaurants, Double longitude, Double latitude, Double radius) {
         if(longitude != null || latitude != null || radius != null) {
             return repository.findRestaurantsByDistance(allRestaurants, longitude, latitude, radius);
         }
         return  allRestaurants;
+    }
+
+    public List<Restaurant> filterByAddress(List<Restaurant> allRestaurants, String address) {
+        if(!StringUtils.isBlank(address)) {
+            return repository.findRestaurantsByAddress(allRestaurants, address);
+        }
+        return allRestaurants;
+    }
+
+    public List<Restaurant> filterByPostCode(List<Restaurant> allRestaurants, String postCode) {
+        if(!StringUtils.isBlank(postCode)) {
+            return repository.findRestaurantsByPostCode(allRestaurants, postCode);
+        }
+        return allRestaurants;
+    }
+
+    public List<Restaurant> filterByHygieneRating(List<Restaurant> allRestaurants, Integer hygieneRating) {
+        if(hygieneRating != null) {
+            return repository.findRestaurantsByHygieneRating(allRestaurants, hygieneRating);
+        }
+        return allRestaurants;
     }
 
     public void saveCSV() {

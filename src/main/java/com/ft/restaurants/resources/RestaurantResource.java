@@ -48,12 +48,24 @@ public class RestaurantResource {
                 .build();
     }
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response filterRestaurants(@QueryParam("longitude") Double longitude, @QueryParam("latitude") Double latitude, @QueryParam("distance") Double distance, @QueryParam("name") String name) {
-        List<Restaurant> filteredRestaurant = restaurantService.filterByName(restaurantService.getAllRestaurants(), name);
+    public Response filterRestaurants(
+            @QueryParam("longitude") Double longitude,
+            @QueryParam("latitude") Double latitude,
+            @QueryParam("distance") Double distance,
+            @QueryParam("name") String name,
+            @QueryParam("tag") String tag,
+            @QueryParam("address") String address,
+            @QueryParam("postCode") String postCode,
+            @QueryParam("hygieneRating") Integer hygieneRating) {
+        List<Restaurant> filteredRestaurant = restaurantService.getAllRestaurants();
         filteredRestaurant = restaurantService.filterByDistance(filteredRestaurant, longitude, latitude, distance);
+        filteredRestaurant = restaurantService.filterByName(filteredRestaurant, name);
+        filteredRestaurant = restaurantService.filterByTag(filteredRestaurant, tag);
+        filteredRestaurant = restaurantService.filterByAddress(filteredRestaurant, address);
+        filteredRestaurant = restaurantService.filterByPostCode(filteredRestaurant, postCode);
+        filteredRestaurant = restaurantService.filterByHygieneRating(filteredRestaurant, hygieneRating);
 //        Location currentLocation = new Location(longitude, latitude);
 //        Set<Restaurant> foundRestaurants = new HashSet<>();
 //        for (Restaurant restaurant: restaurantService.getRestaurants()) {

@@ -31,7 +31,7 @@ public class RestaurantRepository {
     }
 
     public void saveData() throws Exception {
-        csvWriter.writeCSV("southwarkwritetest.csv", restaurants);
+        csvWriter.writeCSV("southwarkwritetest.csv", this.restaurants);
     }
 
     public List<Restaurant> getRestaurants() {
@@ -49,9 +49,16 @@ public class RestaurantRepository {
     }
 
     public List<Restaurant> findRestaurantsByName(List<Restaurant> restaurants, String regex) {
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile(regex.toLowerCase());
         return restaurants.stream()
-                .filter(restaurant -> pattern.matcher(restaurant.getName()).find())
+                .filter(restaurant -> pattern.matcher(restaurant.getName().toLowerCase()).find())
+                .collect(Collectors.toList());
+    }
+
+    public List<Restaurant> findRestaurantsByTag(List<Restaurant> restaurants, String tag) {
+        Pattern pattern = Pattern.compile(tag.toLowerCase());
+        return restaurants.stream()
+                .filter(restaurant -> pattern.matcher(restaurant.getTag().toLowerCase()).find())
                 .collect(Collectors.toList());
     }
 
@@ -64,9 +71,23 @@ public class RestaurantRepository {
     }
 
     public List<Restaurant> findRestaurantsByAddress(List<Restaurant> restaurants, String regex) {
+        Pattern pattern = Pattern.compile(regex.toLowerCase());
+        return restaurants.stream()
+                .filter(restaurant -> pattern.matcher(restaurant.getAddress().toLowerCase()).find())
+                .collect(Collectors.toList());
+    }
+
+    public List<Restaurant> findRestaurantsByPostCode(List<Restaurant> restaurants, String regex) {
         Pattern pattern = Pattern.compile(regex);
         return restaurants.stream()
-                .filter(restaurant -> pattern.matcher(restaurant.getAddress()).find())
+                .filter(restaurant -> pattern.matcher(restaurant.getPostcode()).find())
+                .collect(Collectors.toList());
+    }
+
+    public List<Restaurant> findRestaurantsByHygieneRating(List<Restaurant> restaurants, Integer hygieneRating) {
+        return restaurants
+                .stream()
+                .filter(restaurant -> restaurant.getHygieneRating().equals(hygieneRating))
                 .collect(Collectors.toList());
     }
 
@@ -85,14 +106,20 @@ public class RestaurantRepository {
     }*/
 
     public void deleteRestaurantById(UUID id) {
-        Iterator<Restaurant> iterator = restaurants.iterator();
 
+
+        for(int i = 0; i < this.restaurants.size(); i++) {
+            if(this.restaurants.get(i).getId().equals(id)) {
+                this.restaurants.remove(i);
+            }
+        }
+        /* Iterator<Restaurant> iterator = restaurants.iterator();
         while(iterator.hasNext()) {
             Restaurant restaurant = iterator.next();
             if(restaurant.getId().equals(id)) {
                 iterator.remove();
             }
-        }
+        }*/
     }
 }
 
