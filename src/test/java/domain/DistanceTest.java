@@ -23,19 +23,19 @@ public class DistanceTest {
         Double expectedDistance = 3949.0;
         Double actualDistance = distance.distance(testLocation1, testLocation2);
 
-        assertThat(actualDistance, closeTo(expectedDistance,683));
+        assertThat(actualDistance, closeTo(expectedDistance,14));
     }
 
     @Test
     public void shouldReturnCorrectDistanceWithGivenCoordinates2() {
-        Location testLocation1 = new Location(-0.0951233, 51.5077467);
-        Location testLocation2 = new Location(-0.0998006, 51.5056301);
+        Location testLocation1 = new Location(-0.0946407, 51.5072498);
+        Location testLocation2 = new Location(-0.097552, 51.5056301);
 
         Distance distance = new Distance();
 
         Double expectedDistance = 0.269;
         Double actualDistance = distance.distance(testLocation1, testLocation2);
 
-        assertThat(actualDistance, closeTo(expectedDistance,0.03));
+        assertThat(actualDistance, closeTo(expectedDistance,0.0015));
     }
 }

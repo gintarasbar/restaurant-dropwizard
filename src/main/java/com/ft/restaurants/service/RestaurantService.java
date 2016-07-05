@@ -89,7 +89,7 @@ public class RestaurantService {
         if(longitude != null || latitude != null || radius != null) {
             return repository.findRestaurantsByDistance(allRestaurants, longitude, latitude, radius);
         }
-        return  allRestaurants;
+        return allRestaurants;
     }
 
     public List<Restaurant> filterByAddress(List<Restaurant> allRestaurants, String address) {

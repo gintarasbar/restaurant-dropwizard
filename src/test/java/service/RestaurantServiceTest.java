@@ -109,7 +109,37 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void shouldReturnAllRestaurantsListWhenFilterByParameterNameParameterIsBlank() {
+    public void shouldCallRepositoryFindRestaurantByTagWhenFilterByTagIsCalled() {
+        List<Restaurant> testList = new ArrayList<>();
+        String testTag = "testTag";
+        restaurantService.filterByTag(testList, testTag);
+        verify(repository).findRestaurantsByTag(testList, testTag);
+    }
+
+    @Test
+    public void shouldReturnAllRestaurantsListWhenFilterByParameterTagParameterIsBlank() {
+        List<Restaurant> testList = new ArrayList<>();
+        String testTag = null;
+        assertThat(restaurantService.filterByTag(testList, testTag), is(testList));
+    }
+
+    @Test
+    public void shouldCallRepositoryFindRestaurantsByAddressWhenFilterByAddressIsCalled() {
+        List<Restaurant> testList = new ArrayList<>();
+        String testAddress = "testAddress";
+        restaurantService.filterByAddress(testList, testAddress);
+        verify(repository).findRestaurantsByAddress(testList, testAddress);
+    }
+
+    @Test
+    public void shouldReturnAllRestaurantsListWhenFilterByAddressParameterIsBlank() {
+        List<Restaurant> testList = new ArrayList<>();
+        String testAddress = null;
+        assertThat(restaurantService.filterByTag(testList, testAddress), is(testList));
+    }
+
+    @Test
+    public void shouldReturnAllRestaurantsListWhenFilterByNameParameterIsBlank() {
         List<Restaurant> testList = new ArrayList<>();
         String testName = null;
         assertThat(restaurantService.filterByName(testList, testName), is(testList));

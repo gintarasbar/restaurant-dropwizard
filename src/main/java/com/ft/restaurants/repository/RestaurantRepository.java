@@ -78,9 +78,9 @@ public class RestaurantRepository {
     }
 
     public List<Restaurant> findRestaurantsByPostCode(List<Restaurant> restaurants, String regex) {
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile(regex.toLowerCase());
         return restaurants.stream()
-                .filter(restaurant -> pattern.matcher(restaurant.getPostcode()).find())
+                .filter(restaurant -> pattern.matcher(restaurant.getPostcode().toLowerCase()).find())
                 .collect(Collectors.toList());
     }
 
