@@ -9,6 +9,7 @@ public final class RestaurantBuilder {
     private UUID id;
     private String name;
     private String description;
+    private String type;
     private String tag;
     private String address;
     private String city;
@@ -35,6 +36,11 @@ public final class RestaurantBuilder {
 
     public RestaurantBuilder description(String description) {
         this.description = description;
+        return this;
+    }
+
+    public RestaurantBuilder type(String type) {
+        this.type = type;
         return this;
     }
 
@@ -70,7 +76,7 @@ public final class RestaurantBuilder {
 
 
     public Restaurant build() {
-        Restaurant restaurant = new Restaurant(id, name, description, tag, address, city, postcode, hygieneRating, location);
+        Restaurant restaurant = new Restaurant(id, name, description, type, tag, address, city, postcode, hygieneRating, location);
         return restaurant;
     }
 }

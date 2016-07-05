@@ -3,6 +3,7 @@ package com.ft.restaurants.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.ft.restaurants.domain.Restaurant;
 import com.ft.restaurants.domain.RestaurantRequest;
+import com.ft.restaurants.domain.TagRequest;
 import com.ft.restaurants.service.RestaurantService;
 
 import javax.ws.rs.*;
@@ -47,12 +48,24 @@ public class RestaurantResource {
                 .build();
     }
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response filterRestaurants(@QueryParam("longitude") Double longitude, @QueryParam("latitude") Double latitude, @QueryParam("distance") Double distance, @QueryParam("name") String name) {
-        List<Restaurant> filteredRestaurant = restaurantService.filterByName(restaurantService.getAllRestaurants(), name);
+    public Response filterRestaurants(
+            @QueryParam("longitude") Double longitude,
+            @QueryParam("latitude") Double latitude,
+            @QueryParam("distance") Double distance,
+            @QueryParam("name") String name,
+            @QueryParam("tag") String tag,
+            @QueryParam("address") String address,
+            @QueryParam("postCode") String postCode,
+            @QueryParam("hygieneRating") Integer hygieneRating) {
+        List<Restaurant> filteredRestaurant = restaurantService.getAllRestaurants();
         filteredRestaurant = restaurantService.filterByDistance(filteredRestaurant, longitude, latitude, distance);
+        filteredRestaurant = restaurantService.filterByName(filteredRestaurant, name);
+        filteredRestaurant = restaurantService.filterByTag(filteredRestaurant, tag);
+        filteredRestaurant = restaurantService.filterByAddress(filteredRestaurant, address);
+        filteredRestaurant = restaurantService.filterByPostCode(filteredRestaurant, postCode);
+        filteredRestaurant = restaurantService.filterByHygieneRating(filteredRestaurant, hygieneRating);
 //        Location currentLocation = new Location(longitude, latitude);
 //        Set<Restaurant> foundRestaurants = new HashSet<>();
 //        for (Restaurant restaurant: restaurantService.getRestaurants()) {
@@ -64,7 +77,7 @@ public class RestaurantResource {
 //        }
         return Response
                 .status(Response.Status.FOUND)
-                .entity(filteredRestaurant)
+                .entity(filteredRestaurant.subList(0,Math.min(20,filteredRestaurant.size())))
                 .build();
     }
 
@@ -110,6 +123,26 @@ public class RestaurantResource {
                     .build();
         }
 
+        return Response
+                .status(Response.Status.NOT_FOUND)
+                .build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}/add-tag")
+    public Response addTag(@PathParam("id") UUID id, TagRequest tag) {
+        checkNotNull(tag);
+        Optional<Restaurant> restaurant = restaurantService.findRestaurantById(id);
+        if (restaurant.isPresent()) {
+            checkArgument(id.equals(restaurant.get().getId()), "ids must be equal");
+            Restaurant taggedRestaurant = restaurantService.tagRestaurant(restaurant.get(), tag);
+            return Response
+                    .status(Response.Status.OK)
+                    .entity(taggedRestaurant)
+                    .build();
+        }
         return Response
                 .status(Response.Status.NOT_FOUND)
                 .build();

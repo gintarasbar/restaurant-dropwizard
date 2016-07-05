@@ -6,51 +6,123 @@ baseUri:
       application/json:
         example: |
           {
-            "name": "Byron Burger",
-            "description": "High end burger restaurants",
-            "type": ["Burger"]
+              "name": "aRestaurant",
+              "description": "aDescription",
+              "type": "aType",
+              "tag": "Restaurant/Cafe/Canteen",
+              "address": "83 East Street",
+              "city": "London",
+              "postcode": "SE17 2DH",
+              "hygieneRating": 3,
+              "location": {
+                "longitude": -0.092383,
+                "latitude": 51.488898
+              }
           }
     responses:
-      200:
-        description: Success
+      201:
+        description: Created
         body:
           application/json:
             example: |
               {
-                "id": "UUID",
-                "name": "Byron Burger",
-                "description": "High end burger restaurant",
-                "type": ["Burger"]
+                "id": "5f2d4e6d-bc21-4d61-aae4-3faed8521740",
+                "name": "aRestaurant",
+                "description": "aDescription",
+                "type": "aType",
+                "tag": "Restaurant/Cafe/Canteen",
+                "address": "83 East Street",
+                "city": "London",
+                "postcode": "SE17 2DH",
+                "hygieneRating": 3,
+                "location": {
+                  "longitude": -0.092383,
+                  "latitude": 51.488898
+                }
               }
       400:
-        description: Bad request, restaurant name not specified
+        description: Bad request
         body:
           application/json:
             example: |
-              { "message": "Mandatory field restaurant name not specified" }
+              {
+                "code": 400,
+                "message": "Unable to process JSON"
+              }
   get:
-    description: Get restaurants stored in CSV
+    description: Get restaurants stored in CSV different filters
     queryParameters:
-      id:
-        type: UUID
-        description: Restaurant id (UUID)
-        required: true
       name:
         type: string
         description: Name of restaurant
         example: "Wagamama"
-        required: true
+      tag:
+        type: string
+        description: Tags of restaurant
+        example: "Canteen"
+      address:
+        type: string
+        description: Address of restaurant
+        example: "1, Southwark Bridge"
+      postCode:
+        type: string
+        description: Postcode of restaurant
+        example: "W2 6LL"
+      hygieneRating:
+        type: integer
+        description: Hygiene rating of restaurant
+        example: 3
+      longitude:
+        type: double
+        description: Restaurant longitude
+        example: 29.8229195
+      latitude:
+        type: double
+        description: Restaurant latitude
+        example: 50.9364820
+      distance:
+        type: double
+        description: Distance to restaurant
+        example: 29.8229195
       responses:
-        200:
+        302:
+          description: Found
           body:
             application/json:
-        500:
-                description: Application error.
-                body:
-                  application/json:
-                    example: |
-                      { "message": "reason for failure" }
-/restaurants/v1/{restaurantId}:
+              example: |
+                [
+                  {
+                    "id": "5c72dec2-6268-4f40-b373-d35f102ff489",
+                    "name": "30 manor place",
+                    "description": "",
+                    "type": "",
+                    "tag": "Takeaway/sandwich shop",
+                    "address": "30 Manor Place",
+                    "city": "London",
+                    "postcode": "SE17 3BB",
+                    "hygieneRating": 3,
+                    "location": {
+                      "longitude": -0.097525,
+                      "latitude": 51.489251
+                    }
+                  },
+                  {
+                    "id": "239d513a-068e-4700-b46b-785a6b2bc6e4",
+                    "name": "56 social club",
+                    "description": "",
+                    "type": "",
+                    "tag": "Pub/bar/nightclub",
+                    "address": "56 Peckham High Street",
+                    "city": "London",
+                    "postcode": "SE15 5DP",
+                    "hygieneRating": 3,
+                    "location": {
+                      "longitude": -0.070891,
+                      "latitude": 51.473214
+                    }
+                  }
+                ]
+/restaurants/v1/{id}:
   get:
     description: Get restaurants by UUID
     queryParameters:
@@ -61,12 +133,134 @@ baseUri:
         200:
           body:
             application/json:
+              example: |
+                {
+                  "id": "5c72dec2-6268-4f40-b373-d35f102ff489",
+                  "name": "30 manor place",
+                  "description": "",
+                  "type": "",
+                  "tag": "Takeaway/sandwich shop",
+                  "address": "30 Manor Place",
+                  "city": "London",
+                  "postcode": "SE17 3BB",
+                  "hygieneRating": 3,
+                  "location": {
+                    "longitude": -0.097525,
+                    "latitude": 51.489251
+                  }
+                }
         404:
-          description: Could not find restaurant Id
+          description: Not found
+          body:
+            html:
+/restaurants/v1/{id}/update-restaurant:
+  put:
+   description: Update a restaurant entry
+      body:
+        application/json:
+          example: |
+            {
+              "id": "85292238-0dec-4e88-aaf4-2ac1439a705b",
+              "name": "Taras kitchen",
+              "description": "",
+              "type": "",
+              "tag": "Restaurant/Cafe/Canteen",
+              "address": "",
+              "city": "Bristol",
+              "postcode": "",
+              "hygieneRating": 5,
+              "location": {
+                "longitude": 0,
+                "latitude": 0
+              }
+            }
+      responses:
+        200:
+          description: Updated
           body:
             application/json:
               example: |
-                { "message": "Could not find restaurant" }
+                {
+                  "id": "85292238-0dec-4e88-aaf4-2ac1439a705b",
+                  "name": "Taras kitchen",
+                  "description": "",
+                  "type": "",
+                  "tag": "Restaurant/Cafe/Canteen",
+                  "address": "",
+                  "city": "Bristol",
+                  "postcode": "",
+                  "hygieneRating": 5,
+                  "location": {
+                    "longitude": 0,
+                    "latitude": 0
+                  }
+                }
+        400:
+          description: Bad request
+          body:
+            application/json:
+              example: |
+                {
+                  "code": 400,
+                  "message": "Unable to process JSON"
+                }
+        404:
+          description: Not found
+          body:
+            html:
+/restaurants/v1/{id}/add-tag:
+  put:
+   description: Tag a restaurant entry
+      body:
+        application/json:
+          example: |
+            {
+            "tag": "Cosy"
+            }
+      responses:
+        200:
+          description: OK
+          body:
+            application/json:
+              example: |
+                {
+                  "id": "85292238-0dec-4e88-aaf4-2ac1439a705b",
+                  "name": "Taras kitchen",
+                  "description": "",
+                  "type": "",
+                  "tag": "Restaurant/Cafe/Canteen/Cosy",
+                  "address": "",
+                  "city": "Bristol",
+                  "postcode": "",
+                  "hygieneRating": 5,
+                  "location": {
+                    "longitude": 0,
+                    "latitude": 0
+                  }
+                }
+        400:
+          description: Bad request
+          body:
+            application/json:
+              example: |
+                {
+                  "code": 400,
+                  "message": "Unable to process JSON"
+                }
+        404:
+          description: Not found
+          body:
+          html:
+/restaurants/v1/save:
+  put:
+    description: Save restaurants to CSV
+        responses:
+          200:
+            description: OK
+
+
+
+
 
 
 

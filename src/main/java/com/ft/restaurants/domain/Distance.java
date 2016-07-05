@@ -1,22 +1,21 @@
 package com.ft.restaurants.domain;
 
 
-import static java.lang.StrictMath.*;
+import static java.lang.Math.*;
 
 public class Distance {
-    private final static Double earthRadius = 6371.00;
+    private final static Double earthRadius = 6371.0;
 
     public static double distance(Location location1, Location location2) {
-        Double distanceLongitude = location2.getLongitude() - location1.getLongitude();
-        Double distanceLatitude = location2.getLatitude() - location1.getLatitude();
+        double distanceLongitude = Math.toRadians(location2.getLongitude() - location1.getLongitude());
+        double distanceLatitude = Math.toRadians(location2.getLatitude() - location1.getLatitude());
 
 
-        Double a = ((sin(distanceLatitude / 2)) * (sin(distanceLatitude / 2)))
+        double a = ((sin(distanceLatitude / 2.0)) * (sin(distanceLatitude / 2.0)))
                     + (cos(location1.getLatitude()) * cos(location2.getLatitude()))
-                    * (sin(distanceLongitude / 2) * sin(distanceLongitude / 2));
-        Double c = 2 * atan2(sqrt(a), sqrt(1-a));
+                    * (sin(distanceLongitude / 2.0) * sin(distanceLongitude / 2.0));
+        double c = 2.0 * atan2(sqrt(a), sqrt(1.0 - a));
         return earthRadius * c;
     }
-
 
 }
